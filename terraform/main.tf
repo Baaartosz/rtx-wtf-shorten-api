@@ -10,11 +10,15 @@ terraform {
     profile = "terraform"
     region  = "eu-west-2"
     bucket  = "aws-baaart-terraform-state"
-    key     = "terraform-starter"
+    key     = "rtx-wtf-shorten"
   }
 }
 
+locals {
+  project = "shorten"
+}
+
 provider "aws" {
-  region = "eu-west-2"
+  region  = "eu-west-2"
   profile = "terraform"
 }
