@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "url-shorten-handler"
+version = "0.1.0"
+description = "Handle shorten url requests for shorten.rtx.wtf"
+authors = ["Bartosz Perczynski <bartosz_p@hotmail.com>"]
+readme = "README.md"
+packages = [{include = "url_shorten_handler"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+assertpy = "^1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
