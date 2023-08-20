@@ -1,7 +1,20 @@
 resource "aws_apigatewayv2_api" "shorten_http_api" {
   name          = "shorten-http-api"
   protocol_type = "HTTP"
-  body          = file("../api/shorten-api.json")
+  body          = data.template_file.api_spec_body.rendered
+}
+
+data "template_file" "api_spec_body" {
+  template = file("../api/shorten-api.tpl")
+  vars     = {
+    lambda_function_uri = aws_lambda_function.url_shorten_lambda.invoke_arn
+  }
+}
+
+resource "aws_apigatewayv2_stage" "shorten_http_api_stage" {
+  api_id      = aws_apigatewayv2_api.shorten_http_api.id
+  name        = "$default"
+  auto_deploy = true
 }
 
 resource "aws_apigatewayv2_domain_name" "shorten_api_domain_name" {
@@ -17,17 +30,6 @@ resource "aws_apigatewayv2_domain_name" "shorten_api_domain_name" {
 resource "aws_apigatewayv2_api_mapping" "shorten_api_mapping" {
   api_id          = aws_apigatewayv2_api.shorten_http_api.id
   domain_name     = aws_apigatewayv2_domain_name.shorten_api_domain_name.id
-  stage           = "$default"
+  stage           = aws_apigatewayv2_stage.shorten_http_api_stage.name
   api_mapping_key = "api"
-}
-
-resource "aws_lambda_permission" "apigw" {
-  statement_id  = "AllowAPIGatewayInvoke"
-  action        = "lambda:InvokeFunction"
-  function_name = "rtx-wtf-test-shorten-handler" ## TODO change to reference lambda function from internal terraform
-  principal     = "apigateway.amazonaws.com"
-
-  # The /*/* portion grants access from any method on any resource
-  # within the API Gateway "REST API".
-  source_arn = "${aws_apigatewayv2_api.shorten_http_api.execution_arn}/*/*"
 }
