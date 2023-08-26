@@ -20,6 +20,9 @@ terraform-apply: ## Run a terraform apply
 terraform-destroy: ## Run a terraform apply
 	$(MAKE) -C terraform destroy
 
+build: ## Build url shorten handler
+	$(MAKE) -C url-shorten-handler build-zip
+
 guard-%: # Guard for ensuring variables are provided into make tasks
 	@if [ -z '${${*}}' ]; then \
 		echo 'Environment Variable $* is not set.' && exit 1; \

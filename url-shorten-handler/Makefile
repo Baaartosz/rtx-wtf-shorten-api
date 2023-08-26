@@ -6,6 +6,8 @@ makefile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 makefile_directory := $(realpath $(dir $(makefile_path)))
 artifact_name := "url-shorten-handler.zip"
 
+## Useful for importing project folders which are shared between the main poetry project
+## -> poetry self add poetry-multiproject-plugin
 build-zip: ## Build Artifact Zip
 	poetry build -f wheel
 	poetry run pip install            \

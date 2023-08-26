@@ -6,20 +6,6 @@
   },
   "paths": {
     "/url": {
-      "get": {
-        "responses": {
-          "default": {
-            "description": "Default response for GET /shorten"
-          }
-        },
-        "x-amazon-apigateway-integration": {
-          "payloadFormatVersion": "2.0",
-          "type": "aws_proxy",
-          "httpMethod": "POST",
-          "uri": "${lambda_function_uri}",
-          "connectionType": "INTERNET"
-        }
-      },
       "post": {
         "responses": {
           "default": {
@@ -35,7 +21,34 @@
         }
       }
     },
-    "/url/stats": {
+    "/url/{proxy+}": {
+      "get": {
+        "responses": {
+          "default": {
+            "description": "Default response for GET /url/{proxy+}"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy",
+          "httpMethod": "POST",
+          "uri": "${lambda_function_uri}",
+          "connectionType": "INTERNET"
+        }
+      },
+      "parameters": [
+        {
+          "name": "proxy+",
+          "in": "path",
+          "description": "Path parameter to include shortened url identifier",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/url/stats/{proxy+}": {
       "get": {
         "responses": {
           "default": {
@@ -49,7 +62,18 @@
           "uri": "${lambda_function_uri}",
           "connectionType": "INTERNET"
         }
-      }
+      },
+      "parameters": [
+        {
+          "name": "proxy+",
+          "in": "path",
+          "description": "Path parameter to include shortened url identifier",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
     }
   },
   "x-amazon-apigateway-importexport-version": "1.0"

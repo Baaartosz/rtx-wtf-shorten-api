@@ -1,5 +1,6 @@
 resource "aws_apigatewayv2_api" "shorten_http_api" {
-  name          = "shorten-http-api"
+  name          = "rtx-wtf-shorten-http-api"
+  description   = "API for shortening URLs to user customizable short urls to be redirected via rtx.wtf"
   protocol_type = "HTTP"
   body          = data.template_file.api_spec_body.rendered
 }

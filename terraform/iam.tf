@@ -12,6 +12,11 @@ resource "aws_iam_role" "function_role" {
       }
     ]
   })
+
+  inline_policy {
+    name = "crud-shorten-urls"
+    policy = data.aws_iam_policy_document.crud_on_shorten_urls_table.json
+  }
 }
 
 resource "aws_iam_policy" "function_logging_policy" {
@@ -29,4 +34,20 @@ resource "aws_iam_policy" "function_logging_policy" {
       }
     ]
   })
+}
+
+data "aws_iam_policy_document" "crud_on_shorten_urls_table" {
+  statement {
+    actions = [
+      "dynamodb:DeleteItem",
+      "dynamodb:GetItem",
+      "dynamodb:PutItem",
+      "dynamodb:Query",
+      "dynamodb:UpdateItem"
+    ]
+    resources = [
+      aws_dynamodb_table.rtx_wtf_shorten_urls.arn
+    ]
+    sid = "CrudOnShortenUrlsTable"
+  }
 }

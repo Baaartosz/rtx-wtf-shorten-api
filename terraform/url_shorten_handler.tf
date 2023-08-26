@@ -11,6 +11,12 @@ resource "aws_lambda_function" "url_shorten_lambda" {
   runtime = "python3.11"
 
   role = aws_iam_role.function_role.arn
+
+  environment {
+    variables = {
+      SHORTEN_URLS_TABLE = aws_dynamodb_table.rtx_wtf_shorten_urls.name
+    }
+  }
 }
 
 resource "aws_cloudwatch_log_group" "function_log_group" {
