@@ -36,6 +36,12 @@ def get_url(event, context):
     table = dynamodb.Table(os.environ["SHORTEN_URLS_TABLE"])
     short_url_item = table.get_item(Key={"id": short_url_id})
 
+    if "Item" not in short_url_item:
+        return {
+            "statusCode": 308,
+            "body": "Link has been removed",
+        }
+
     return {
         "statusCode": 308,
         "headers": {
