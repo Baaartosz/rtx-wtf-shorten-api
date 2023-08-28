@@ -5,6 +5,9 @@ from tests.fixtures.requests import (
     api_gw_request_post_url,
     api_gw_request_get_url,
     api_gw_request_get_url_stats,
+    api_gw_request_delete_url,
+    api_gw_request_from_rtx_wtf,
+    api_gw_request_from_rtx_wtf_alternative,
 )
 
 from url_shorten_handler.utils import get_route_path, get_proxy_param
@@ -15,7 +18,10 @@ from url_shorten_handler.utils import get_route_path, get_proxy_param
     [
         (api_gw_request_post_url(), "POST", "/url"),
         (api_gw_request_get_url(), "GET", "/url/{proxy+}"),
+        (api_gw_request_delete_url(), "DELETE", "/url/{proxy+}"),
         (api_gw_request_get_url_stats(), "GET", "/url/stats/{proxy+}"),
+        (api_gw_request_from_rtx_wtf(), "GET", "/{proxy+}"),
+        (api_gw_request_from_rtx_wtf_alternative(), "GET", "/{proxy+}"),
     ],
 )
 def test_get_route_path(api_request, expected_route, expected_path):
@@ -29,6 +35,8 @@ def test_get_route_path(api_request, expected_route, expected_path):
     [
         (api_gw_request_get_url(), "G3rZi26WMeGnqVvuNSnENu"),
         (api_gw_request_get_url_stats(), "G3rZi26WMeGnqVvuNSnENu"),
+        (api_gw_request_from_rtx_wtf(), "G3rZi26WMeGnqVvuNSnENu"),
+        (api_gw_request_from_rtx_wtf_alternative(), "G3rZi26WMeGnqVvuNSnENu"),
     ],
 )
 def test_get_proxy_param(api_request, expected_id):

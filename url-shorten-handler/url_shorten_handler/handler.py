@@ -4,7 +4,7 @@ import os
 import boto3
 import shortuuid
 
-from url_shorten_handler.logic import post_url, get_url, get_url_stats
+from url_shorten_handler.logic import post_url, get_url, get_url_stats, delete_url
 from url_shorten_handler.model.shortened_url import ShortenedUrl
 from url_shorten_handler.utils import get_route_path
 
@@ -14,8 +14,10 @@ def lambda_handler(event, context):
     route, path = get_route_path(event)
     if route == "POST" and path == "/url":
         return post_url(event, context)
-    elif route == "GET" and path == "/url/{proxy+}":
+    elif route == "GET" and path == "/url/{proxy+}" or path == "/{proxy+}":
         return get_url(event, context)
+    elif route == "DELETE" and path == "/url/{proxy+}":
+        return delete_url(event, context)
     elif route == "GET" and path == "/url/stats/{proxy+}":
         return get_url_stats()
     else:

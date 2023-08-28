@@ -127,3 +127,129 @@ def api_gw_request_get_url_stats():
         "body": '{\r\n    "url": "https://baaart.dev/"\r\n}',
         "isBase64Encoded": False,
     }
+
+
+def api_gw_request_delete_url():
+    return {
+        "version": "2.0",
+        "routeKey": "DELETE /url/{proxy+}",
+        "rawPath": "/url/G3rZi26WMeGnqVvuNSnENu",
+        "rawQueryString": "",
+        "headers": {
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br",
+            "cache-control": "no-cache",
+            "content-length": "38",
+            "content-type": "application/json",
+            "host": "shorten.rtx.wtf",
+            "postman-token": "29f99b36-31b1-437f-bf56-804b20a90200",
+            "user-agent": "PostmanRuntime/7.32.3",
+            "x-amzn-trace-id": "Root=1-64e9f530-2debc86545e295bb0a1f8e64",
+            "x-forwarded-for": "78.150.27.179",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+        },
+        "requestContext": {
+            "accountId": "907824143427",
+            "apiId": "efx7utlm0j",
+            "domainName": "shorten.rtx.wtf",
+            "domainPrefix": "shorten",
+            "http": {
+                "method": "DELETE",
+                "path": "/url/G3rZi26WMeGnqVvuNSnENu",
+                "protocol": "HTTP/1.1",
+                "sourceIp": "78.150.27.179",
+                "userAgent": "PostmanRuntime/7.32.3",
+            },
+            "requestId": "KRM_qhBxLPEEPhQ=",
+            "routeKey": "DELETE /url/{proxy+}",
+            "stage": "$default",
+            "time": "26/Aug/2023:12:50:56 +0000",
+            "timeEpoch": 1693054256780,
+        },
+        "pathParameters": {"proxy": "G3rZi26WMeGnqVvuNSnENu"},
+        "body": '{\r\n    "url": "https://baaart.dev/"\r\n}',
+        "isBase64Encoded": False,
+    }
+
+
+def api_gw_request_from_rtx_wtf():
+    return {
+        "version": "2.0",
+        "routeKey": "GET /{proxy+}",
+        "rawPath": "/s/s/G3rZi26WMeGnqVvuNSnENu",
+        "rawQueryString": "",
+        "headers": {
+            "cache-control": "no-cache",
+            "content-length": "0",
+            "host": "efx7utlm0j.execute-api.eu-west-2.amazonaws.com",
+            "user-agent": "Amazon CloudFront",
+            "via": "1.1 716fd417a527ecd4f9d6cef2c9258582.cloudfront.net (CloudFront)",
+            "x-amz-cf-id": "vZUzrviMrXOdCbRbp5uZeE6ct9UbJMqV4uqIOWLc4UR_SqtjCIFuoA==",
+            "x-amzn-trace-id": "Root=1-64ec9323-5c593db9447e0a122bd98985",
+            "x-forwarded-for": "78.150.27.179, 70.132.46.141",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+        },
+        "requestContext": {
+            "accountId": "907824143427",
+            "apiId": "efx7utlm0j",
+            "domainName": "efx7utlm0j.execute-api.eu-west-2.amazonaws.com",
+            "domainPrefix": "efx7utlm0j",
+            "http": {
+                "method": "GET",
+                "path": "/s/s/G3rZi26WMeGnqVvuNSnENu",
+                "protocol": "HTTP/1.1",
+                "sourceIp": "78.150.27.179",
+                "userAgent": "Amazon CloudFront",
+            },
+            "requestId": "KXvtlg6jLPEEJbg=",
+            "routeKey": "GET /{proxy+}",
+            "stage": "$default",
+            "time": "28/Aug/2023:12:29:23 +0000",
+            "timeEpoch": 1693225763423,
+        },
+        "pathParameters": {"proxy": "s/s/G3rZi26WMeGnqVvuNSnENu"},
+        "isBase64Encoded": False,
+    }
+
+
+def api_gw_request_from_rtx_wtf_alternative():
+    return {
+        "version": "2.0",
+        "routeKey": "GET /{proxy+}",
+        "rawPath": "/s/s/G3rZi26WMeGnqVvuNSnENu",
+        "rawQueryString": "",
+        "headers": {
+            "cache-control": "no-cache",
+            "content-length": "0",
+            "host": "efx7utlm0j.execute-api.eu-west-2.amazonaws.com",
+            "user-agent": "Amazon CloudFront",
+            "via": "1.1 716fd417a527ecd4f9d6cef2c9258582.cloudfront.net (CloudFront)",
+            "x-amz-cf-id": "vZUzrviMrXOdCbRbp5uZeE6ct9UbJMqV4uqIOWLc4UR_SqtjCIFuoA==",
+            "x-amzn-trace-id": "Root=1-64ec9323-5c593db9447e0a122bd98985",
+            "x-forwarded-for": "78.150.27.179, 70.132.46.141",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+        },
+        "requestContext": {
+            "accountId": "907824143427",
+            "apiId": "efx7utlm0j",
+            "domainName": "efx7utlm0j.execute-api.eu-west-2.amazonaws.com",
+            "domainPrefix": "efx7utlm0j",
+            "http": {
+                "method": "GET",
+                "path": "/s/s/G3rZi26WMeGnqVvuNSnENu",
+                "protocol": "HTTP/1.1",
+                "sourceIp": "78.150.27.179",
+                "userAgent": "Amazon CloudFront",
+            },
+            "requestId": "KXvtlg6jLPEEJbg=",
+            "routeKey": "GET /{proxy+}",
+            "stage": "$default",
+            "time": "28/Aug/2023:12:29:23 +0000",
+            "timeEpoch": 1693225763423,
+        },
+        "pathParameters": {"proxy": "s/G3rZi26WMeGnqVvuNSnENu"},
+        "isBase64Encoded": False,
+    }
