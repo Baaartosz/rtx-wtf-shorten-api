@@ -21,11 +21,52 @@
         }
       }
     },
+    "/{proxy+}": {
+      "get": {
+        "responses": {
+          "default": {
+            "description": "Default response for GET /url/{proxy+}"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy",
+          "httpMethod": "POST",
+          "uri": "${lambda_function_uri}",
+          "connectionType": "INTERNET"
+        }
+      },
+      "parameters": [
+        {
+          "name": "proxy+",
+          "in": "path",
+          "description": "Path parameter to include shortened url identifier",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ]
+    },
     "/url/{proxy+}": {
       "get": {
         "responses": {
           "default": {
             "description": "Default response for GET /url/{proxy+}"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy",
+          "httpMethod": "POST",
+          "uri": "${lambda_function_uri}",
+          "connectionType": "INTERNET"
+        }
+      },
+      "delete": {
+        "responses": {
+          "default": {
+            "description": "Default response for DELETE /url/{proxy+}"
           }
         },
         "x-amazon-apigateway-integration": {
