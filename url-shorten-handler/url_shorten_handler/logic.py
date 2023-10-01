@@ -45,7 +45,7 @@ def handle_post_url(event):
     }
 
 
-def handle_get_url(event):
+def handle_get_url(event: dict):
     short_url_id = get_proxy_param(event)
     print(f"id: {short_url_id}")
 
@@ -60,14 +60,17 @@ def handle_get_url(event):
             "body": "Not found",
         }
 
-    # todo when retrieving short_url,
-    #  todo append the IP address
-    #   (storing ip addresses probs isnt that bad but will need to do batch ip-address call)
-    #              OR
-    #  todo call ip-api and get country
-    #   (api-call limits / will it slow down url retrival? or send it to another lambda to process)
-    #              AND
-    #   then append to object.
+    source_ip = event.get("requestContext").get("http").get("sourceIp")
+    table.update_item(
+        Key={"id": short_url_id},
+        UpdateExpression="SET #addresses = list_append(if_not_exists(#addresses, :empty_list), :new_address)",
+        ExpressionAttributeNames={"#addresses": "addresses"},
+        ExpressionAttributeValues={
+            ":new_address": [source_ip],
+            ":empty_list": [],
+        },
+    )
+    print(f"Appended '{source_ip}' to url")
 
     print(f"Returning URL: {short_url_item['Item']['original_url']}")
     return {
