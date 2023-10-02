@@ -12,6 +12,7 @@ pydantic = "^2.2.1"
 boto3 = "^1.28.30"
 shortuuid = "^1.0.11"
 pynamodb = "^5.5.0"
+httpx = "^0.25.0"
 
 
 [tool.poetry.group.dev.dependencies]
