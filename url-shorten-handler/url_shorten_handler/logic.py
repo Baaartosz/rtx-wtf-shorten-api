@@ -103,7 +103,7 @@ def handle_get_url_stats(event):
     obj = ShortenedUrl(**short_url_item)
     logging.info(f"Loaded '{short_url_id}' into short url model: {obj.model_dump_json()}")
 
-    if not obj.addresses:
+    if len(obj.addresses) != 0:
         logging.info(f"Object has {len(obj.addresses)} ip addresses")
         response_list = []
         chunks = [obj.addresses[i : i + 100] for i in range(0, len(obj.addresses), 100)]
