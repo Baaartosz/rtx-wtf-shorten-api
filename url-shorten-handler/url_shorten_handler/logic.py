@@ -1,10 +1,10 @@
 import json
 import os
+import sys
 
 import boto3
 import httpx
 import shortuuid
-import logging
 from pydantic import ValidationError
 
 from url_shorten_handler.model.shortened_url import ShortenedUrl
@@ -21,15 +21,15 @@ def handle_post_url(event):
             id=shortuuid.uuid(),
             original_url=request_body["url"],
         )
-        logging.info(f"Shortened URL: {short_url.model_dump_json()}")
+        print(f"Shortened URL: {short_url.model_dump_json()}")
     except KeyError:
-        logging.error(f"Failed to create shortened, due to url parameter missing. {request_body}")
+        print(f"Failed to create shortened, due to url parameter missing. {request_body}")
         return {
             "statusCode": 400,
             "body": "Body missing 'url' parameter",
         }
     except ValidationError:
-        logging.error(f"Failed to create shortened URL for request: {request_body}")
+        print(f"Failed to create shortened URL for request: {request_body}")
         return {
             "statusCode": 400,
             "body": f"Invalid URL: {request_body['url']}",
@@ -39,7 +39,7 @@ def handle_post_url(event):
         Item=json.loads(short_url.model_dump_json()),
     )
 
-    logging.info(f"Saved to DynamoDB: {short_url.model_dump_json()}")
+    print(f"Saved to DynamoDB: {short_url.model_dump_json()}")
     return {
         "statusCode": 200,
         "body": short_url.model_dump_json(),
@@ -48,12 +48,12 @@ def handle_post_url(event):
 
 def handle_get_url(event: dict):
     short_url_id = get_proxy_param(event)
-    logging.info(f"Received '{short_url_id}' id")
+    print(f"Received '{short_url_id}' id")
 
     short_url_item = table.get_item(Key={"id": short_url_id})
 
     if "Item" not in short_url_item:
-        logging.info(f"No Items found wih '{short_url_id}' id")
+        print(f"No Items found wih '{short_url_id}' id")
         return {
             "statusCode": 404,
             "body": "Not found",
@@ -62,7 +62,7 @@ def handle_get_url(event: dict):
     # todo optimise same ip address by changing to dictionary and incrementing same addresses
     try:
         source_ip = event.get("requestContext").get("http").get("sourceIp")
-        logging.info(f"Updating '{short_url_id}' record with '{source_ip}' source ip")
+        print(f"Updating '{short_url_id}' record with '{source_ip}' source ip")
         table.update_item(
             Key={"id": short_url_id},
             UpdateExpression="SET #addresses = list_append(if_not_exists(#addresses, :empty_list), :new_address)",
@@ -72,11 +72,11 @@ def handle_get_url(event: dict):
                 ":empty_list": [],
             },
         )
-        logging.info(f"Successfully appended '{source_ip}' to '{short_url_id}'")
+        print(f"Successfully appended '{source_ip}' to '{short_url_id}'")
     except Exception as ex:
-        logging.error(f"Exception occurred during source_ip append, {ex}")
+        print(f"Exception occurred during source_ip append, {ex}")
 
-    logging.info(f"Returning URL: {short_url_item['Item']['original_url']}")
+    print(f"Returning URL: {short_url_item['Item']['original_url']}")
     return {
         "statusCode": 308,
         "headers": {
@@ -87,9 +87,9 @@ def handle_get_url(event: dict):
 
 def handle_delete_url(event):
     short_url_id = get_proxy_param(event)
-    logging.info(f"Received '{short_url_id}' id")
+    print(f"Received '{short_url_id}' id")
     short_url_item = table.delete_item(Key={"id": short_url_id})
-    logging.info(f"Deleting '{short_url_id}': {short_url_item}")
+    print(f"Deleting '{short_url_id}': {short_url_item}")
     return {
         "statusCode": 204,
     }
@@ -97,14 +97,14 @@ def handle_delete_url(event):
 
 def handle_get_url_stats(event):
     short_url_id = get_proxy_param(event)
-    logging.info(f"Received '{short_url_id}' id")
+    print(f"Received '{short_url_id}' id")
 
     short_url_item = table.get_item(Key={"id": get_proxy_param(event)})["Item"]
     obj = ShortenedUrl(**short_url_item)
-    logging.info(f"Loaded '{short_url_id}' into short url model: {obj.model_dump_json()}")
+    print(f"Loaded '{short_url_id}' into short url model: {obj.model_dump_json()}")
 
     if len(obj.addresses) != 0:
-        logging.info(f"Object has {len(obj.addresses)} ip addresses")
+        print(f"Object has {len(obj.addresses)} ip addresses")
         response_list = []
         chunks = [obj.addresses[i : i + 100] for i in range(0, len(obj.addresses), 100)]
         for chunk in chunks:
@@ -119,7 +119,6 @@ def handle_get_url_stats(event):
                 url="http://ip-api.com/batch",
                 json=formatted_batch_ips,
             )
-            logging.debug(f"Sending {formatted_batch_ips} to ip api")
             response_list.append(response.json())
 
         aggregated_data = {
@@ -149,9 +148,9 @@ def handle_get_url_stats(event):
                 ExpressionAttributeValues={":country_stats_value": obj.country_stats},
             )
         except Exception as ex:
-            logging.error(f"Failed to update record '{short_url_id}' with new data, {ex}")
+            print(f"Failed to update record '{short_url_id}' with new data, {ex}")
 
-    logging.info(f"Final short url object: {obj.model_dump_json()}")
+    print(f"Final short url object: {obj.model_dump_json()}")
     return {
         "statusCode": 200,
         "body": obj.model_dump_json(),
