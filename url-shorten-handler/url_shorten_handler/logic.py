@@ -105,30 +105,32 @@ def handle_get_url_stats(event):
     obj = ShortenedUrl(**short_url_item)
     print(f"Short URL: {obj.model_dump_json()}")
 
-    response_list = []
-    chunks = [obj.addresses[i : i + 100] for i in range(0, len(obj.addresses), 100)]
-    for chunk in chunks:
-        formatted_batch_ips = [
-            {
-                "query": ip,
-                "fields": "city,country,countryCode,mobile,proxy,hosting",
-            }
-            for ip in chunk
-        ]
-        response = httpx.post(
-            url="http://ip-api.com/batch",
-            json=formatted_batch_ips,
-        )
-        response_list.append(response.json())
+    if not obj.addresses:
+        response_list = []
+        chunks = [obj.addresses[i : i + 100] for i in range(0, len(obj.addresses), 100)]
+        for chunk in chunks:
+            formatted_batch_ips = [
+                {
+                    "query": ip,
+                    "fields": "city,country,countryCode,mobile,proxy,hosting",
+                }
+                for ip in chunk
+            ]
+            response = httpx.post(
+                url="http://ip-api.com/batch",
+                json=formatted_batch_ips,
+            )
+            response_list.append(response.json())
 
-    aggregated_data = {
-        **obj.country_stats,
-        **{k: v for k, v in obj.country_stats.items() if k not in obj.country_stats},
-    }
+        aggregated_data = {
+            **obj.country_stats,
+            **{
+                k: v for k, v in obj.country_stats.items() if k not in obj.country_stats
+            },
+        }
 
-    print(response_list)
-    # Iterate over each entry in the country_stats list
-    if response_list:
+        print(response_list)
+        # Iterate over each entry in the country_stats list
         for entry in response_list[0]:
             country = entry["country"]
 
