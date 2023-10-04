@@ -4,7 +4,7 @@ from url_shorten_handler.logic import (
     handle_get_url_stats,
     handle_delete_url,
 )
-from url_shorten_handler.utils import get_route_path
+from url_shorten_handler.util.event_util import get_route_path
 
 
 def lambda_handler(event, context):

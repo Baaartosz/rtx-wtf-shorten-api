@@ -10,7 +10,7 @@ from tests.fixtures.requests import (
     api_gw_request_from_rtx_wtf_alternative,
 )
 
-from url_shorten_handler.utils import get_route_path, get_proxy_param
+from url_shorten_handler.util.event_util import get_route_path, get_proxy_param
 
 
 @pytest.mark.parametrize(
