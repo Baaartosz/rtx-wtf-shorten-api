@@ -47,7 +47,12 @@ def handle_post_url(event):
         logging.info(f"Saved to DynamoDB: {short_url.model_dump_json()}")
         return {
             "statusCode": 200,
-            "body": json.dumps({"url": f"https://rtx.wtf/s/{short_url.id}"}),
+            "body": json.dumps(
+                {
+                    "id": short_url.id,
+                    "url": f"https://rtx.wtf/s/{short_url.id}",
+                }
+            ),
         }
 
 

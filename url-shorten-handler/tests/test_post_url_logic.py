@@ -38,6 +38,7 @@ def test_happy_handle_post_url(
     assert_that(response["statusCode"]).is_equal_to(200)
     assert_that(json.loads(response["body"])).is_equal_to(
         {
+            "id": static_shortuuid,
             "url": "https://rtx.wtf/s/unique_id",
         }
     )
@@ -46,7 +47,7 @@ def test_happy_handle_post_url(
     table = mock_dynamo_db.Table(os.getenv("SHORTEN_URLS_TABLE"))
 
     # Query DynamoDB for the record
-    result = table.get_item(Key={"id": "unique_id"})
+    result = table.get_item(Key={"id": static_shortuuid})
 
     # Check that the record exists and has the correct URL
     assert_that(result).contains_key("Item")

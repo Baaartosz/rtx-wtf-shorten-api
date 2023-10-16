@@ -9,6 +9,7 @@ from moto import mock_dynamodb
 @pytest.fixture
 def static_shortuuid(mocker):
     mocker.patch.object(shortuuid, "uuid", return_value="unique_id")
+    return "unique_id"
 
 
 @pytest.fixture
