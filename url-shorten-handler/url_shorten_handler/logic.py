@@ -10,11 +10,10 @@ from url_shorten_handler.model.shortened_url import ShortenedUrl
 from url_shorten_handler.util import logging
 from url_shorten_handler.util.event_util import get_proxy_param
 
-dynamodb = boto3.resource("dynamodb")
-table = dynamodb.Table(os.environ["SHORTEN_URLS_TABLE"])
-
 
 def handle_post_url(event):
+    dynamodb = boto3.resource("dynamodb", region_name=os.getenv("AWS_REGION"))
+    table = dynamodb.Table(os.environ["SHORTEN_URLS_TABLE"])
     request_body = json.loads(event["body"])
     try:
         short_url = ShortenedUrl(
@@ -23,7 +22,7 @@ def handle_post_url(event):
         )
         logging.info(f"Shortened URL: {short_url.model_dump_json()}")
     except KeyError:
-        logging.error(f"Failed to create shortened, due to url parameter missing. {request_body}")
+        logging.error(f"Failed to create shortened url, due to url parameter missing. {request_body}")
         return {
             "statusCode": 400,
             "body": "Body missing 'url' parameter",
@@ -34,22 +33,31 @@ def handle_post_url(event):
             "statusCode": 400,
             "body": f"Invalid URL: {request_body['url']}",
         }
+    except Exception as e:
+        logging.fatal(f"Fatal exception occurred for request: {request_body}, {e}")
+        return {
+            "statusCode": 500,
+            "body": f"Internal Server Error",
+        }
+    else:
+        table.put_item(
+            Item=json.loads(short_url.model_dump_json()),
+        )
 
-    table.put_item(
-        Item=json.loads(short_url.model_dump_json()),
-    )
-
-    logging.info(f"Saved to DynamoDB: {short_url.model_dump_json()}")
-    return {
-        "statusCode": 200,
-        "body": short_url.model_dump_json(),
-    }
+        logging.info(f"Saved to DynamoDB: {short_url.model_dump_json()}")
+        return {
+            "statusCode": 200,
+            "body": json.dumps({"url": f"https://rtx.wtf/s/{short_url.id}"}),
+        }
 
 
 def handle_get_url(event: dict):
+    dynamodb = boto3.resource("dynamodb", region_name=os.getenv("AWS_REGION"))
+    table = dynamodb.Table(os.environ["SHORTEN_URLS_TABLE"])
     short_url_id = get_proxy_param(event)
     logging.info(f"Received '{short_url_id}' id for url retrieval")
 
+    # TODO if short_url_id is empty redirect to 404 page
     short_url_item = table.get_item(Key={"id": short_url_id})
 
     if "Item" not in short_url_item:
@@ -86,6 +94,8 @@ def handle_get_url(event: dict):
 
 
 def handle_delete_url(event):
+    dynamodb = boto3.resource("dynamodb", region_name=os.getenv("AWS_REGION"))
+    table = dynamodb.Table(os.environ["SHORTEN_URLS_TABLE"])
     short_url_id = get_proxy_param(event)
     logging.info(f"Received '{short_url_id}' id for deletion")
     short_url_item = table.delete_item(Key={"id": short_url_id})
@@ -96,6 +106,8 @@ def handle_delete_url(event):
 
 
 def handle_get_url_stats(event):
+    dynamodb = boto3.resource("dynamodb", region_name=os.getenv("AWS_REGION"))
+    table = dynamodb.Table(os.environ["SHORTEN_URLS_TABLE"])
     short_url_id = get_proxy_param(event)
     logging.info(f"Received '{short_url_id}' id for stat retrieval")
 

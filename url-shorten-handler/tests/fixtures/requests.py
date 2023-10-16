@@ -253,3 +253,49 @@ def api_gw_request_from_rtx_wtf_alternative():
         "pathParameters": {"proxy": "s/G3rZi26WMeGnqVvuNSnENu"},
         "isBase64Encoded": False,
     }
+
+
+def api_gw_request_get_url_stats_trailing_slash():
+    return {
+        "version": "2.0",
+        "routeKey": "GET /url/stats/{proxy+}",
+        "rawPath": "/url/stats/test/",
+        "rawQueryString": "",
+        "headers": {
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+            "accept-encoding": "gzip, deflate, br",
+            "accept-language": "en-GB,en;q=0.5",
+            "content-length": "0",
+            "host": "shorten.rtx.wtf",
+            "sec-fetch-dest": "document",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-site": "none",
+            "sec-fetch-user": "?1",
+            "upgrade-insecure-requests": "1",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/118.0",
+            "x-amzn-trace-id": "Root=1-652d1969-1149b7b976438ad73bac0ddb",
+            "x-forwarded-for": "2.97.24.153",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+        },
+        "requestContext": {
+            "accountId": "907824143427",
+            "apiId": "efx7utlm0j",
+            "domainName": "shorten.rtx.wtf",
+            "domainPrefix": "shorten",
+            "http": {
+                "method": "GET",
+                "path": "/url/stats/test/",
+                "protocol": "HTTP/1.1",
+                "sourceIp": "2.97.24.153",
+                "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/118.0",
+            },
+            "requestId": "M5DokiqlrPEEP6A=",
+            "routeKey": "GET /url/stats/{proxy+}",
+            "stage": "$default",
+            "time": "16/Oct/2023:11:07:21 +0000",
+            "timeEpoch": 1697454441708,
+        },
+        "pathParameters": {"proxy": "test/"},
+        "isBase64Encoded": False,
+    }
