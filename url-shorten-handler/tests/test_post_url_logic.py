@@ -39,7 +39,7 @@ def test_happy_handle_post_url(
     assert_that(json.loads(response["body"])).is_equal_to(
         {
             "id": static_shortuuid,
-            "url": "https://rtx.wtf/s/unique_id",
+            "url": f"https://rtx.wtf/s/{static_shortuuid}",
         }
     )
 
