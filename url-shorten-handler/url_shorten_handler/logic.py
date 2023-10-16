@@ -4,6 +4,7 @@ import os
 import boto3
 import httpx
 import shortuuid
+from boto3.dynamodb.conditions import Attr
 from pydantic import ValidationError
 
 from url_shorten_handler.model.shortened_url import ShortenedUrl
@@ -103,8 +104,14 @@ def handle_delete_url(event):
     table = dynamodb.Table(os.environ["SHORTEN_URLS_TABLE"])
     short_url_id = get_proxy_param(event)
     logging.info(f"Received '{short_url_id}' id for deletion")
-    short_url_item = table.delete_item(Key={"id": short_url_id})
-    logging.info(f"Deleting '{short_url_id}'")
+    try:
+        table.delete_item(
+            Key={"id": short_url_id},
+            ConditionExpression=Attr("id").exists(),
+        )
+        print(f"URL '{short_url_id}' deleted")
+    except dynamodb.meta.client.exceptions.ConditionalCheckFailedException:
+        print(f"URL '{short_url_id}' does not exist")
     return {
         "statusCode": 204,
     }
