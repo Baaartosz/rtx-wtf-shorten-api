@@ -2,7 +2,6 @@ import json
 import os
 
 import pytest
-import shortuuid
 from assertpy import assert_that
 
 from url_shorten_handler.logic import handle_post_url
