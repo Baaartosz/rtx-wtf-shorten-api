@@ -130,8 +130,9 @@ def handle_get_url_stats(event):
     if len(obj.addresses) != 0:
         logging.info(f"Object has {len(obj.addresses)} ip addresses")
         response_list = []
-        chunks = [obj.addresses[i : i + 100] for i in range(0, len(obj.addresses), 100)]
+        chunks = [obj.addresses[i: i + 100] for i in range(0, len(obj.addresses), 100)]
         for chunk in chunks:
+            logging.info(f"Processing chunk of {len(chunk)}")
             formatted_batch_ips = [
                 {
                     "query": ip,

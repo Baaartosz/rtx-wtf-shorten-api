@@ -1,8 +1,10 @@
 import os
+from unittest.mock import patch
 
 import boto3
 import pytest
 import shortuuid
+from httpx import Client
 from moto import mock_dynamodb
 
 
