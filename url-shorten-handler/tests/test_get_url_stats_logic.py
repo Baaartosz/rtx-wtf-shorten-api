@@ -178,3 +178,13 @@ def test_happy_handle_get_url_stats_with_existing_addresses(
             "United Kingdom": {"clicks": 2},
         }
     )
+
+
+def test_unhappy_no_short_url(
+        mock_dynamo_db,
+        httpx_mock: HTTPXMock,
+):
+    response = handle_get_url_stats((api_gw_request_get_url_stats()))
+
+    # Assert correct response has been returned
+    assert_that(response["statusCode"]).is_equal_to(404)

@@ -63,14 +63,14 @@ def handle_get_url(event: dict):
     short_url_id = get_proxy_param(event)
     logging.info(f"Received '{short_url_id}' id for url retrieval")
 
-    # TODO if short_url_id is empty redirect to 404 page
-    short_url_item = table.get_item(Key={"id": short_url_id})
-
-    if "Item" not in short_url_item:
-        logging.warn(f"No Items found wih '{short_url_id}' id")
+    short_url_item = table.get_item(Key={"id": short_url_id}).get("Item")
+    if short_url_item is None:
+        logging.warn(f"No short url found with id: {short_url_id}")
         return {
-            "statusCode": 404,
-            "body": "Not found",
+            "statusCode": 308,
+            "headers": {
+                "Location": "https://shorten.rtx.wtf/404",
+            },
         }
 
     # todo optimise same ip address by changing to dictionary and incrementing same addresses
@@ -90,11 +90,11 @@ def handle_get_url(event: dict):
     except Exception as ex:
         logging.error(f"Exception occurred during source_ip append, {ex}")
 
-    logging.info(f"Returning URL: {short_url_item['Item']['original_url']}")
+    logging.info(f"Returning URL: {short_url_item['original_url']}")
     return {
         "statusCode": 308,
         "headers": {
-            "Location": short_url_item["Item"]["original_url"],
+            "Location": short_url_item["original_url"],
         },
     }
 
@@ -123,7 +123,14 @@ def handle_get_url_stats(event):
     short_url_id = get_proxy_param(event)
     logging.info(f"Received '{short_url_id}' id for stat retrieval")
 
-    short_url_item = table.get_item(Key={"id": get_proxy_param(event)})["Item"]
+    short_url_item = table.get_item(Key={"id": get_proxy_param(event)}).get("Item")
+
+    if short_url_item is None:
+        logging.warn(f"No Items found wih '{short_url_id}' id")
+        return {
+            "statusCode": 404,
+        }
+
     obj = ShortenedUrl(**short_url_item)
     logging.info(f"Loaded '{short_url_id}' into short url model: {obj.model_dump_json()}")
 

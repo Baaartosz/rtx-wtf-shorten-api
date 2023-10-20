@@ -16,8 +16,8 @@ from url_shorten_handler.logic import handle_get_url
     ids=["default_get_url", "alias_get_url"],
 )
 def test_happy_handle_get_url(
-    event: dict,
-    mock_dynamo_db,
+        event: dict,
+        mock_dynamo_db,
 ):
     # Pre-populate DynamoDB table with test record
     table = _get_table(mock_dynamo_db)
@@ -47,15 +47,15 @@ def test_happy_handle_get_url(
     ],
     ids=["default_get_url", "alias_get_url"],
 )
-def test_missing_short_url_entry_handle_get_url(
-    event: dict,
-    mock_dynamo_db,
+def test_unhappy_no_shortened_url(
+        event: dict,
+        mock_dynamo_db,
 ):
     response = handle_get_url(event)
 
-    # Assert that response is 404 when id doesn't match anything in DynamoDB
-    assert_that(response["statusCode"]).is_equal_to(404)
-    assert_that(response["body"]).is_equal_to("Not found")
+    # Assert that response is 308 and redirects to shorten.rtx.wtf/404
+    assert_that(response["statusCode"]).is_equal_to(308)
+    assert_that(response["headers"]["Location"]).is_equal_to("https://shorten.rtx.wtf/404")
 
 
 def _get_table(mock_dynamo_db):
