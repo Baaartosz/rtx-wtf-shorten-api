@@ -178,5 +178,5 @@ def handle_get_url_stats(event):
     logging.info(f"Final short url object: {obj.model_dump_json()}")
     return {
         "statusCode": 200,
-        "body": obj.model_dump_json(),
+        "body": obj.model_dump_json(exclude={"addresses"}),
     }

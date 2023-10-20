@@ -51,7 +51,6 @@ def test_happy_handle_get_url_stats_without_addresses(
             {
                 "id": "G3rZi26WMeGnqVvuNSnENu",
                 "original_url": "http://example.com/",
-                "addresses": [],
                 "country_stats": {
                     "United Kingdom": {"clicks": "1"},
                 },
@@ -111,7 +110,6 @@ def test_happy_handle_get_url_stats_with_unprocessed_addresses(
             {
                 "id": "G3rZi26WMeGnqVvuNSnENu",
                 "original_url": "http://example.com/",
-                "addresses": [],
                 "country_stats": {
                     "United Kingdom": {"clicks": address_count},
                 },
@@ -164,7 +162,6 @@ def test_happy_handle_get_url_stats_with_existing_addresses(
             {
                 "id": "G3rZi26WMeGnqVvuNSnENu",
                 "original_url": "http://example.com/",
-                "addresses": [],
                 "country_stats": {
                     "United Kingdom": {"clicks": "2"},
                 },
