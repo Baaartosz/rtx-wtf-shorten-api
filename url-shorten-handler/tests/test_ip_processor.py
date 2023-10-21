@@ -3,7 +3,7 @@ import pytest
 from assertpy import assert_that
 from pytest_httpx import HTTPXMock
 
-from url_shorten_handler.ip_processor.ip_processor import IPAddressProcessor
+from url_shorten_handler.util.ip_processor import IPAddressProcessor
 
 
 @pytest.mark.parametrize(

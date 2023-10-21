@@ -51,7 +51,7 @@ class IPAddressProcessor:
 
     @staticmethod
     def _create_chunks(address_map: Counter) -> list:
-        return [list(address_map.keys())[i : i + 100] for i in range(0, len(address_map), 100)]
+        return [list(address_map.keys())[i: i + 100] for i in range(0, len(address_map), 100)]
 
     @staticmethod
     def aggregate_dicts(dict_one: dict, dict_two: dict) -> dict:

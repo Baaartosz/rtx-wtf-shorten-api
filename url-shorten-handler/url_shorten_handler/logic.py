@@ -2,19 +2,17 @@ import json
 import os
 
 import boto3
-import httpx
 import shortuuid
 from boto3.dynamodb.conditions import Attr
 from pydantic import ValidationError
-from collections import Counter
 
-from url_shorten_handler.ip_processor.ip_processor import IPAddressProcessor
+from url_shorten_handler.util.ip_processor import IPAddressProcessor
 from url_shorten_handler.model.shortened_url import ShortenedUrl
 from url_shorten_handler.util import logging
 from url_shorten_handler.util.event_util import get_proxy_param
 
 
-def handle_post_url(event):
+def handle_post_url(event: dict):
     dynamodb = boto3.resource("dynamodb", region_name=os.getenv("AWS_REGION"))
     table = dynamodb.Table(os.environ["SHORTEN_URLS_TABLE"])
     request_body = json.loads(event["body"])
@@ -75,7 +73,6 @@ def handle_get_url(event: dict):
             },
         }
 
-    # todo optimise same ip address by changing to dictionary and incrementing same addresses
     try:
         source_ip = event.get("requestContext").get("http").get("sourceIp")
         logging.info(f"Updating '{short_url_id}' record with '{source_ip}' source ip")
@@ -101,7 +98,7 @@ def handle_get_url(event: dict):
     }
 
 
-def handle_delete_url(event):
+def handle_delete_url(event: dict):
     dynamodb = boto3.resource("dynamodb", region_name=os.getenv("AWS_REGION"))
     table = dynamodb.Table(os.environ["SHORTEN_URLS_TABLE"])
     short_url_id = get_proxy_param(event)
@@ -133,19 +130,9 @@ def handle_get_url_stats(event):
             "statusCode": 404,
         }
 
-    obj = ShortenedUrl(**short_url_item)
-    logging.info(f"Loaded '{short_url_id}' into short url model: {obj.model_dump_json()}")
+    short_url_object = ShortenedUrl(**short_url_item)
+    logging.info(f"Loaded '{short_url_id}' into short url model: {short_url_object.model_dump_json()}")
 
-    process_ip_addresses(obj, short_url_id, table)
-
-    logging.info(f"Final short url object: {obj.model_dump_json()}")
-    return {
-        "statusCode": 200,
-        "body": obj.model_dump_json(exclude={"addresses"}),
-    }
-
-
-def process_ip_addresses(short_url_object: ShortenedUrl, short_url_id, table):
     if len(short_url_object.addresses) != 0:
         logging.info(f"Object has {len(short_url_object.addresses)} ip addresses")
         ip_processor = IPAddressProcessor()
@@ -169,3 +156,9 @@ def process_ip_addresses(short_url_object: ShortenedUrl, short_url_id, table):
             )
         except Exception as ex:
             logging.error(f"Failed to update record '{short_url_id}' with new data, {ex}")
+
+    logging.info(f"Final short url object: {short_url_object.model_dump_json()}")
+    return {
+        "statusCode": 200,
+        "body": short_url_object.model_dump_json(exclude={"addresses"}),
+    }
