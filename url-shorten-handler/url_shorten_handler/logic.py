@@ -152,10 +152,10 @@ def process_ip_addresses(short_url_object: ShortenedUrl, short_url_id, table):
         country_clicks = ip_processor.process_ip_addresses(addresses=short_url_object.addresses)
 
         short_url_object.addresses = []
-        short_url_object.country_stats = {
-            key: short_url_object.country_stats.get(key, 0) + country_clicks.get(key, 0)
-            for key in set(short_url_object.country_stats) | set(country_clicks)
-        }
+        short_url_object.country_stats = ip_processor.aggregate_dicts(
+            country_clicks,
+            short_url_object.country_stats,
+        )
 
         try:
             table.update_item(
