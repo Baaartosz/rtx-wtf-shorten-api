@@ -6,7 +6,9 @@ import httpx
 import shortuuid
 from boto3.dynamodb.conditions import Attr
 from pydantic import ValidationError
+from collections import Counter
 
+from url_shorten_handler.ip_processor.ip_processor import IPAddressProcessor
 from url_shorten_handler.model.shortened_url import ShortenedUrl
 from url_shorten_handler.util import logging
 from url_shorten_handler.util.event_util import get_proxy_param
@@ -134,40 +136,26 @@ def handle_get_url_stats(event):
     obj = ShortenedUrl(**short_url_item)
     logging.info(f"Loaded '{short_url_id}' into short url model: {obj.model_dump_json()}")
 
-    if len(obj.addresses) != 0:
-        logging.info(f"Object has {len(obj.addresses)} ip addresses")
-        response_list = []
-        chunks = [obj.addresses[i: i + 100] for i in range(0, len(obj.addresses), 100)]
-        for chunk in chunks:
-            logging.info(f"Processing chunk of {len(chunk)}")
-            formatted_batch_ips = [
-                {
-                    "query": ip,
-                    "fields": "city,country,countryCode,mobile,proxy,hosting",
-                }
-                for ip in chunk
-            ]
-            response = httpx.post(
-                url="http://ip-api.com/batch",
-                json=formatted_batch_ips,
-            )
-            response_list.append(response.json())
+    process_ip_addresses(obj, short_url_id, table)
 
-        aggregated_data = {
-            **obj.country_stats,
-            **{k: v for k, v in obj.country_stats.items() if k not in obj.country_stats},
+    logging.info(f"Final short url object: {obj.model_dump_json()}")
+    return {
+        "statusCode": 200,
+        "body": obj.model_dump_json(exclude={"addresses"}),
+    }
+
+
+def process_ip_addresses(short_url_object: ShortenedUrl, short_url_id, table):
+    if len(short_url_object.addresses) != 0:
+        logging.info(f"Object has {len(short_url_object.addresses)} ip addresses")
+        ip_processor = IPAddressProcessor()
+        country_clicks = ip_processor.process_ip_addresses(addresses=short_url_object.addresses)
+
+        short_url_object.addresses = []
+        short_url_object.country_stats = {
+            key: short_url_object.country_stats.get(key, 0) + country_clicks.get(key, 0)
+            for key in set(short_url_object.country_stats) | set(country_clicks)
         }
-
-        for entry in response_list[0]:
-            country = entry["country"]
-            if country not in aggregated_data:
-                aggregated_data[country] = {
-                    "clicks": 0,
-                }
-            aggregated_data[country]["clicks"] += 1
-
-        obj.addresses = []
-        obj.country_stats = aggregated_data
 
         try:
             table.update_item(
@@ -177,13 +165,7 @@ def handle_get_url_stats(event):
                     "#addresses": "addresses",
                     "#country_stats": "country_stats",
                 },
-                ExpressionAttributeValues={":country_stats_value": obj.country_stats},
+                ExpressionAttributeValues={":country_stats_value": short_url_object.country_stats},
             )
         except Exception as ex:
             logging.error(f"Failed to update record '{short_url_id}' with new data, {ex}")
-
-    logging.info(f"Final short url object: {obj.model_dump_json()}")
-    return {
-        "statusCode": 200,
-        "body": obj.model_dump_json(exclude={"addresses"}),
-    }
