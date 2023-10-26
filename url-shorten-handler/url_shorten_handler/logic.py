@@ -17,7 +17,7 @@ def handle_options(event: dict):
         "statusCode": 200,
         "headers": {
             "Access-Control-Allow-Origin": "https://main.d1m4v5lcicho3v.amplifyapp.com",
-            "Access-Control-Allow-Methods": "OPTIONS, GET, PUT",
+            "Access-Control-Allow-Methods": "OPTIONS, GET, POST, DELETE",
             "Access-Control-Allow-Headers": "*",
         },
     }
@@ -61,7 +61,7 @@ def handle_post_url(event: dict):
             "statusCode": 200,
             "headers": {
                 "Access-Control-Allow-Origin": "https://main.d1m4v5lcicho3v.amplifyapp.com",
-                "Access-Control-Allow-Methods": "OPTIONS, GET, PUT",
+                "Access-Control-Allow-Methods": "OPTIONS, GET, POST, DELETE",
                 "Access-Control-Allow-Headers": "*",
             },
             "body": json.dumps(
