@@ -12,6 +12,17 @@ from url_shorten_handler.util import logging
 from url_shorten_handler.util.event_util import get_proxy_param
 
 
+def handle_options(event: dict):
+    return {
+        "statusCode": 200,
+        "headers": {
+            "Access-Control-Allow-Origin": "https://main.d1m4v5lcicho3v.amplifyapp.com",
+            "Access-Control-Allow-Methods": "OPTIONS, GET, PUT",
+            "Access-Control-Allow-Headers": "*",
+        },
+    }
+
+
 def handle_post_url(event: dict):
     dynamodb = boto3.resource("dynamodb", region_name=os.getenv("AWS_REGION"))
     table = dynamodb.Table(os.environ["SHORTEN_URLS_TABLE"])
@@ -48,6 +59,11 @@ def handle_post_url(event: dict):
         logging.info(f"Saved to DynamoDB: {short_url.model_dump_json()}")
         return {
             "statusCode": 200,
+            "headers": {
+                "Access-Control-Allow-Origin": "https://main.d1m4v5lcicho3v.amplifyapp.com",
+                "Access-Control-Allow-Methods": "OPTIONS, GET, PUT",
+                "Access-Control-Allow-Headers": "*",
+            },
             "body": json.dumps(
                 {
                     "id": short_url.id,

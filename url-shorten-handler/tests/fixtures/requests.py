@@ -41,6 +41,47 @@ def api_gw_request_post_url():
     }
 
 
+def api_gw_request_options_url():
+    return {
+        "version": "2.0",
+        "routeKey": "OPTIONS /url",
+        "rawPath": "/url",
+        "rawQueryString": "",
+        "headers": {
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br",
+            "cache-control": "no-cache",
+            "content-length": "0",
+            "host": "efx7utlm0j.execute-api.eu-west-2.amazonaws.com",
+            "postman-token": "99d28356-79d0-4901-8419-015fcb8e8903",
+            "user-agent": "PostmanRuntime/7.34.0",
+            "x-amzn-trace-id": "Root=1-653a6bac-5a659b83374b273f7a179ca2",
+            "x-forwarded-for": "2.99.21.143",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+        },
+        "requestContext": {
+            "accountId": "907824143427",
+            "apiId": "efx7utlm0j",
+            "domainName": "efx7utlm0j.execute-api.eu-west-2.amazonaws.com",
+            "domainPrefix": "efx7utlm0j",
+            "http": {
+                "method": "OPTIONS",
+                "path": "/url",
+                "protocol": "HTTP/1.1",
+                "sourceIp": "2.99.21.143",
+                "userAgent": "PostmanRuntime/7.34.0",
+            },
+            "requestId": "NaXC-g2WLPEEMBQ=",
+            "routeKey": "OPTIONS /url",
+            "stage": "$default",
+            "time": "26/Oct/2023:13:37:48 +0000",
+            "timeEpoch": 1698327468323,
+        },
+        "isBase64Encoded": False,
+    }
+
+
 def api_gw_request_get_url():
     return {
         "version": "2.0",

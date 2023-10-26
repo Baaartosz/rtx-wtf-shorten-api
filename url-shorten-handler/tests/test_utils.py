@@ -8,6 +8,7 @@ from tests.fixtures.requests import (
     api_gw_request_delete_url,
     api_gw_request_from_rtx_wtf,
     api_gw_request_from_rtx_wtf_alternative,
+    api_gw_request_options_url,
 )
 
 from url_shorten_handler.util.event_util import get_route_path, get_proxy_param
@@ -17,6 +18,7 @@ from url_shorten_handler.util.event_util import get_route_path, get_proxy_param
     "api_request, expected_route, expected_path",
     [
         (api_gw_request_post_url(), "POST", "/url"),
+        (api_gw_request_options_url(), "OPTIONS", "/url"),
         (api_gw_request_get_url(), "GET", "/url/{proxy+}"),
         (api_gw_request_delete_url(), "DELETE", "/url/{proxy+}"),
         (api_gw_request_get_url_stats(), "GET", "/url/stats/{proxy+}"),

@@ -10,13 +10,13 @@ artifact_name := "url-shorten-handler.zip"
 ## -> poetry self add poetry-multiproject-plugin
 build-zip: ## Build Artifact Zip
 	poetry build -f wheel
-	poetry run pip install            \
+	poetry run pip install -q         \
 		--upgrade 			           \
 		--only-binary :all:             \
 		--platform manylinux2014_x86_64 \
 		--target package dist/*.whl
 	rm $(artifact_name) || echo "Code artifact not found"
-	cd package && zip -r ../$(artifact_name) . -x "*.pyc" -x "*dist-info*" -x "*/__pycache__/*"
+	cd package && zip -rq ../$(artifact_name) . -x "*.pyc" -x "*dist-info*" -x "*/__pycache__/*"
 	rm -r dist/ package/
 
 test: ## Run pytests

@@ -19,6 +19,20 @@
           "uri": "${lambda_function_uri}",
           "connectionType": "INTERNET"
         }
+      },
+      "options": {
+        "responses": {
+          "default": {
+            "description": "Default response for OPTIONS /shorten"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy",
+          "httpMethod": "OPTIONS",
+          "uri": "${lambda_function_uri}",
+          "connectionType": "INTERNET"
+        }
       }
     },
     "/{proxy+}": {
