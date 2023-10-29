@@ -9,6 +9,7 @@ from tests.fixtures.requests import (
     api_gw_request_from_rtx_wtf,
     api_gw_request_from_rtx_wtf_alternative,
     api_gw_request_options_url,
+    api_gw_request_get_url_shorten_rtx,
 )
 
 from url_shorten_handler.util.event_util import get_route_path, get_proxy_param
@@ -39,6 +40,7 @@ def test_get_route_path(api_request, expected_route, expected_path):
         (api_gw_request_get_url_stats(), "G3rZi26WMeGnqVvuNSnENu"),
         (api_gw_request_from_rtx_wtf(), "G3rZi26WMeGnqVvuNSnENu"),
         (api_gw_request_from_rtx_wtf_alternative(), "G3rZi26WMeGnqVvuNSnENu"),
+        (api_gw_request_get_url_shorten_rtx(), "G3rZi26WMeGnqVvuNSnENu"),
     ],
 )
 def test_get_proxy_param(api_request, expected_id):

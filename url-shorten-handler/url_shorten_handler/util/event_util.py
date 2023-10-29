@@ -8,4 +8,4 @@ def get_route_path(event) -> Tuple[str, str]:
 
 
 def get_proxy_param(event) -> str:
-    return event["pathParameters"]["proxy"].lstrip("s/")
+    return event["pathParameters"]["proxy"].split("/")[-1]
