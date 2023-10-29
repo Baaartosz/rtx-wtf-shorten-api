@@ -29,7 +29,7 @@ def handle_post_url(event: dict):
     request_body = json.loads(event["body"])
     try:
         short_url = ShortenedUrl(
-            id=shortuuid.uuid(),
+            id=shortuuid.uuid()[:12],
             original_url=request_body["url"],
         )
         logging.info(f"Shortened URL: {short_url.model_dump_json()}")
