@@ -16,7 +16,7 @@ def handle_options(event: dict):
     return {
         "statusCode": 200,
         "headers": {
-            "Access-Control-Allow-Origin": "https://shorten.rtx.wtf, https://rtx.wtf",
+            "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "OPTIONS, GET, POST, DELETE",
             "Access-Control-Allow-Headers": "*",
         },
@@ -60,7 +60,7 @@ def handle_post_url(event: dict):
         return {
             "statusCode": 200,
             "headers": {
-                "Access-Control-Allow-Origin": "https://shorten.rtx.wtf, https://rtx.wtf",
+                "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "OPTIONS, GET, POST, DELETE",
                 "Access-Control-Allow-Headers": "*",
             },
