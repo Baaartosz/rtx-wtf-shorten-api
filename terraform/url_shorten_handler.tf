@@ -4,6 +4,7 @@ resource "aws_lambda_function" "url_shorten_lambda" {
   filename = "../url-shorten-handler/url-shorten-handler.zip"
   source_code_hash = filebase64sha256("../url-shorten-handler/url-shorten-handler.zip")
 
+  memory_size = "1536"
   # "main" is the filename within the zip file (main.js) and "handler"
   # is the name of the property under which the handler function was
   # exported in that file.
