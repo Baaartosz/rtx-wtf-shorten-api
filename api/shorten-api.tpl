@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "rtx-wtf-shorten-api",
-    "version": "2023-08-16 15:47:17UTC"
+    "version": "2024-06-03 15:47:17UTC"
   },
   "paths": {
     "/url": {
@@ -25,18 +25,18 @@
           "connectionType": "INTERNET"
         }
       },
-      "options": {
-        "responses": {
-          "default": {
-            "description": "Default response for OPTIONS /shorten"
+      "options" : {
+        "responses" : {
+          "default" : {
+            "description" : "Default response for OPTIONS /url"
           }
         },
-        "x-amazon-apigateway-integration": {
-          "payloadFormatVersion": "2.0",
-          "type": "aws_proxy",
-          "httpMethod": "OPTIONS",
-          "uri": "${lambda_function_uri}",
-          "connectionType": "INTERNET"
+        "x-amazon-apigateway-integration" : {
+          "payloadFormatVersion" : "2.0",
+          "type" : "aws_proxy",
+          "httpMethod" : "POST",
+          "uri" : "${lambda_function_uri}",
+          "connectionType" : "INTERNET"
         }
       }
     },
