@@ -9,3 +9,7 @@ def get_route_path(event) -> Tuple[str, str]:
 
 def get_proxy_param(event) -> str:
     return event["pathParameters"]["proxy"].split("/")[-1]
+
+
+def get_cognito_name(event) -> str:
+    return event["requestContext"]["authorizer"]["jwt"]["claims"]["cognito:username"]
