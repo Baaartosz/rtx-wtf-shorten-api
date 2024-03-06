@@ -62,6 +62,22 @@ def api_gw_request_post_url():
     }
 
 
+def request_context():
+    return {
+        "accountId": "907824143427",
+        "apiId": "efx7utlm0j",
+        "authorizer": {
+            "jwt": {
+                "claims": {
+                    "aud": "7re6c9kmrbdbjmj3v33pnnls8s",
+                    "auth_time": "1709761939",
+                    "cognito:username": "bart",
+                }
+            }
+        }
+    }
+
+
 def api_gw_request_options_url():
     return {
         "version": "2.0",

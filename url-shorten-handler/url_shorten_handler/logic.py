@@ -9,7 +9,7 @@ from pydantic import ValidationError
 from url_shorten_handler.util.ip_processor import IPAddressProcessor
 from url_shorten_handler.model.shortened_url import ShortenedUrl
 from url_shorten_handler.util import logging
-from url_shorten_handler.util.event_util import get_proxy_param
+from url_shorten_handler.util.event_util import get_proxy_param, get_cognito_name
 
 
 def handle_options(event: dict):
@@ -30,6 +30,7 @@ def handle_post_url(event: dict):
     try:
         short_url = ShortenedUrl(
             id=shortuuid.uuid()[:12],
+            owner=get_cognito_name(event),
             original_url=request_body["url"],
         )
         logging.info(f"Shortened URL: {short_url.model_dump_json()}")

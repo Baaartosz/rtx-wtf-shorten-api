@@ -31,6 +31,7 @@ def test_happy_handle_get_url_stats_without_addresses(
     table.put_item(
         Item={
             "id": "G3rZi26WMeGnqVvuNSnENu",
+            "owner": "bart",
             "original_url": "http://example.com",
             "country_stats": {
                 "United Kingdom": 1,
@@ -46,6 +47,7 @@ def test_happy_handle_get_url_stats_without_addresses(
         json.dumps(
             {
                 "id": "G3rZi26WMeGnqVvuNSnENu",
+                "owner": "bart",
                 "original_url": "http://example.com/",
                 "country_stats": {
                     "United Kingdom": "1",
@@ -85,6 +87,7 @@ def test_happy_handle_get_url_stats_with_unprocessed_addresses(
     table.put_item(
         Item={
             "id": "G3rZi26WMeGnqVvuNSnENu",
+            "owner": "bart",
             "original_url": "http://example.com",
             "addresses": ["78.150.27.179" for _ in range(address_count)],
         }
@@ -105,6 +108,7 @@ def test_happy_handle_get_url_stats_with_unprocessed_addresses(
         json.dumps(
             {
                 "id": "G3rZi26WMeGnqVvuNSnENu",
+                "owner": "bart",
                 "original_url": "http://example.com/",
                 "country_stats": {
                     "United Kingdom": address_count,
@@ -133,6 +137,7 @@ def test_happy_handle_get_url_stats_with_existing_addresses(
     table.put_item(
         Item={
             "id": "G3rZi26WMeGnqVvuNSnENu",
+            "owner": "bart",
             "original_url": "http://example.com",
             "addresses": ["78.150.27.179"],
             "country_stats": {
@@ -157,6 +162,7 @@ def test_happy_handle_get_url_stats_with_existing_addresses(
         json.dumps(
             {
                 "id": "G3rZi26WMeGnqVvuNSnENu",
+                "owner": "bart",
                 "original_url": "http://example.com/",
                 "country_stats": {
                     "United Kingdom": "2",
