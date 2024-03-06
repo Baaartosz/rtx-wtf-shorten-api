@@ -5,10 +5,21 @@ resource "aws_apigatewayv2_api" "shorten_http_api" {
   body          = data.template_file.api_spec_body.rendered
 }
 
+#resource "aws_api_gateway_authorizer" "cognito_user_pool_authorizer" {
+#  name          = "rtx-wtf-shorten-cognito-user-pool-authorizer"
+#  type          = "COGNITO_USER_POOLS"
+#  identity_source = "method.request.header.Authorization"
+#  provider_arns =  ["arn:aws:cognito-idp:eu-west-2:907824143427:userpool/eu-west-2_Wurx6FIUd"]
+#  rest_api_id = aws_apigatewayv2_api.shorten_http_api.id
+#}
+
 data "template_file" "api_spec_body" {
   template = file("../api/shorten-api.tpl")
   vars     = {
     lambda_function_uri = aws_lambda_function.url_shorten_lambda.invoke_arn
+    client_id = "7re6c9kmrbdbjmj3v33pnnls8s"
+    user_pool_id = "eu-west-2_Wurx6FIUd"
+    region = local.region
   }
 }
 

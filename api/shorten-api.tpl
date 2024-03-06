@@ -12,6 +12,11 @@
             "description": "Default response for POST /shorten"
           }
         },
+        "security": [
+          {
+            "jwt-authorizer": []
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "payloadFormatVersion": "2.0",
           "type": "aws_proxy",
@@ -129,6 +134,23 @@
           }
         }
       ]
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "jwt-authorizer": {
+        "type": "oauth2",
+        "x-amazon-apigateway-authorizer": {
+          "type": "jwt",
+          "identitySource": "$request.header.Authorization",
+          "jwtConfiguration": {
+            "audience": [
+              "${client_id}"
+            ],
+            "issuer": "https://cognito-idp.${region}.amazonaws.com/${user_pool_id}"
+          }
+        }
+      }
     }
   },
   "x-amazon-apigateway-importexport-version": "1.0"

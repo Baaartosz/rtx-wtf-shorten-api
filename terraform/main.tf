@@ -16,9 +16,10 @@ terraform {
 
 locals {
   project = "shorten"
+  region  = "eu-west-2"
 }
 
 provider "aws" {
-  region  = "eu-west-2"
+  region  = local.region
   profile = "terraform"
 }
