@@ -34,6 +34,22 @@ def mock_dynamo_db(environment_variables):
             ],
             AttributeDefinitions=[
                 {"AttributeName": "id", "AttributeType": "S"},
+                {"AttributeName": "owner", "AttributeType": "S"},
+            ],
+            GlobalSecondaryIndexes=[  # Define the Global Secondary Index
+                {
+                    "IndexName": "OwnerIndex",
+                    "KeySchema": [
+                        {"AttributeName": "owner", "KeyType": "HASH"},  # Key schema for the GSI
+                    ],
+                    "Projection": {
+                        "ProjectionType": "ALL"
+                    },
+                    "ProvisionedThroughput": {
+                        "ReadCapacityUnits": 5,
+                        "WriteCapacityUnits": 5,
+                    },
+                },
             ],
             ProvisionedThroughput={"ReadCapacityUnits": 5, "WriteCapacityUnits": 5},
         )
