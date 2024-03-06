@@ -40,6 +40,23 @@
         }
       }
     },
+    "/url/list": {
+      "get": {
+        "responses": {
+          "default": {
+            "description": "Default response for GET /url/list"
+          }
+        },
+        "security": [],
+        "x-amazon-apigateway-integration": {
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy",
+          "httpMethod": "GET",
+          "uri": "${lambda_function_uri}",
+          "connectionType": "INTERNET"
+        }
+      }
+    },
     "/{proxy+}": {
       "get": {
         "responses": {
