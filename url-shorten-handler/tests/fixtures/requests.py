@@ -21,23 +21,60 @@ def api_gw_request_post_url():
         "requestContext": {
             "accountId": "907824143427",
             "apiId": "efx7utlm0j",
+            "authorizer": {
+                "jwt": {
+                    "claims": {
+                        "aud": "7re6c9kmrbdbjmj3v33pnnls8s",
+                        "auth_time": "1709761939",
+                        "cognito:username": "bart",
+                        "email": "bartosz_p@hotmail.com",
+                        "email_verified": "true",
+                        "event_id": "0c80c36c-fd8a-4958-bec5-bc4a4f3c966a",
+                        "exp": "1709765539",
+                        "iat": "1709761940",
+                        "iss": "https://cognito-idp.eu-west-2.amazonaws.com/eu-west-2_Wurx6FIUd",
+                        "jti": "5ed111dd-e30b-4b98-9b54-ae586f0ea34f",
+                        "nickname": "bart",
+                        "origin_jti": "892dc434-d87d-4b6e-a28a-fd1a05780714",
+                        "sub": "3672c59d-5fbc-4e5b-9e7c-19b597ff3603",
+                        "token_use": "id",
+                    },
+                    "scopes": "null",
+                }
+            },
             "domainName": "shorten.rtx.wtf",
             "domainPrefix": "shorten",
             "http": {
                 "method": "POST",
                 "path": "/url",
                 "protocol": "HTTP/1.1",
-                "sourceIp": "78.150.27.179",
-                "userAgent": "PostmanRuntime/7.32.3",
+                "sourceIp": "82.21.32.80",
+                "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
             },
-            "requestId": "KBjClgeaLPEEPEw=",
+            "requestId": "UOjQWi8mrPEEMng=",
             "routeKey": "POST /url",
             "stage": "$default",
-            "time": "21/Aug/2023:18:50:56 +0000",
-            "timeEpoch": 1692643856226,
+            "time": "06/Mar/2024:21:52:27 +0000",
+            "timeEpoch": 1709761947566,
         },
         "body": '{\r\n    "url": "https://baaart.dev/"\r\n}',
         "isBase64Encoded": False,
+    }
+
+
+def request_context():
+    return {
+        "accountId": "907824143427",
+        "apiId": "efx7utlm0j",
+        "authorizer": {
+            "jwt": {
+                "claims": {
+                    "aud": "7re6c9kmrbdbjmj3v33pnnls8s",
+                    "auth_time": "1709761939",
+                    "cognito:username": "bart",
+                }
+            }
+        }
     }
 
 
@@ -122,6 +159,30 @@ def api_gw_request_get_url():
         },
         "pathParameters": {"proxy": "G3rZi26WMeGnqVvuNSnENu"},
         "body": '{\r\n    "id":"G3rZi26WMeGnqVvuNSnENu"\r\n}',
+        "isBase64Encoded": False,
+    }
+
+
+def api_gw_request_get_url_list_jwt():
+    return {
+        "version": "2.0",
+        "routeKey": "GET /{proxy+}",
+        "rawPath": "/api/url/G3rZi26WMeGnqVvuNSnENu",
+        "rawQueryString": "",
+        "headers": {
+            "cache-control": "no-cache",
+            "content-length": "0",
+            "host": "efx7utlm0j.execute-api.eu-west-2.amazonaws.com",
+            "user-agent": "Amazon CloudFront",
+            "via": "1.1 cb3394cad3f414f33c4f30965c750226.cloudfront.net (CloudFront)",
+            "x-amz-cf-id": "Ot_Jg3a7rED4t9MLIXAayWc35quJbYnGq6Uz8Yh538E56u2YR1CxHw==",
+            "x-amzn-trace-id": "Root=1-653e2c65-2567a04d526bfa2749ada0a9",
+            "x-forwarded-for": "2.99.21.143, 15.158.44.243",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+        },
+        "requestContext": request_context(),
+        "pathParameters": {"proxy": "api/url/G3rZi26WMeGnqVvuNSnENu"},
         "isBase64Encoded": False,
     }
 

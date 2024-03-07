@@ -11,4 +11,15 @@ resource "aws_dynamodb_table" "rtx_wtf_shorten_urls" {
     name = "id"
     type = "S"
   }
+
+  attribute {
+    name = "owner"
+    type = "S"
+  }
+
+  global_secondary_index {
+    name               = "OwnerIndex"
+    hash_key           = "owner"
+    projection_type    = "ALL"
+  }
 }

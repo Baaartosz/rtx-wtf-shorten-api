@@ -1,15 +1,15 @@
 import json
 import os
+from typing import List
 
 import boto3
 import shortuuid
-from boto3.dynamodb.conditions import Attr
+from boto3.dynamodb.conditions import Attr, Key
 from pydantic import ValidationError
-
-from url_shorten_handler.util.ip_processor import IPAddressProcessor
 from url_shorten_handler.model.shortened_url import ShortenedUrl
 from url_shorten_handler.util import logging
-from url_shorten_handler.util.event_util import get_proxy_param
+from url_shorten_handler.util.event_util import get_proxy_param, get_cognito_name
+from url_shorten_handler.util.ip_processor import IPAddressProcessor
 
 
 def handle_options(event: dict):
@@ -30,6 +30,7 @@ def handle_post_url(event: dict):
     try:
         short_url = ShortenedUrl(
             id=shortuuid.uuid()[:12],
+            owner=get_cognito_name(event),
             original_url=request_body["url"],
         )
         logging.info(f"Shortened URL: {short_url.model_dump_json()}")
@@ -178,3 +179,36 @@ def handle_get_url_stats(event):
         "statusCode": 200,
         "body": short_url_object.model_dump_json(exclude={"addresses"}),
     }
+
+
+def handle_list_url(event: dict):
+    dynamodb = boto3.resource("dynamodb", region_name=os.getenv("AWS_REGION"))
+    table = dynamodb.Table(os.environ["SHORTEN_URLS_TABLE"])
+    user = get_cognito_name(event)
+    logging.info(f"Requesting url list for '{user}'")
+
+    short_url_items = table.query(
+        IndexName="OwnerIndex",
+        KeyConditionExpression=Key("owner").eq(user),
+    )
+    logging.info(f"{short_url_items}")
+    logging.info(f"Sending url list for '{user}'")
+
+    short_url_items = short_url_items.get("Items")
+    logging.info(f"Cleaned list '{clean_shortened_url_data(short_url_items)}'")
+    return {
+        "statusCode": 200,
+        "body": json.dumps(clean_shortened_url_data(short_url_items)),
+    }
+
+
+def clean_shortened_url_data(url_data_list):
+    # Define the fields you want to remove
+    fields_to_remove = {'country_stats', 'addresses'}
+
+    # Iterate over each item in the list and remove the specified fields
+    for item in url_data_list:
+        for field in fields_to_remove:
+            item.pop(field, None)  # Use pop to remove the field, ignore if field is not present
+
+    return url_data_list

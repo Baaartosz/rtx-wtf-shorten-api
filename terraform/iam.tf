@@ -46,7 +46,8 @@ data "aws_iam_policy_document" "crud_on_shorten_urls_table" {
       "dynamodb:UpdateItem"
     ]
     resources = [
-      aws_dynamodb_table.rtx_wtf_shorten_urls.arn
+      aws_dynamodb_table.rtx_wtf_shorten_urls.arn, # ARN for the table
+      "${aws_dynamodb_table.rtx_wtf_shorten_urls.arn}/index/OwnerIndex"
     ]
     sid = "CrudOnShortenUrlsTable"
   }

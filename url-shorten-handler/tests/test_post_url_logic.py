@@ -5,6 +5,7 @@ import pytest
 from assertpy import assert_that
 
 from url_shorten_handler.logic import handle_post_url
+from tests.fixtures.requests import request_context
 
 
 @pytest.mark.parametrize(
@@ -28,7 +29,10 @@ def test_happy_handle_post_url(
     mock_dynamo_db,
 ):
     # Mock event input
-    event = {"body": json.dumps({"url": test_url})}
+    event = {
+        "requestContext": request_context(),
+        "body": json.dumps({"url": test_url}),
+    }
 
     # Call the function
     response = handle_post_url(event)
@@ -67,7 +71,10 @@ def test_malformed_handle_post_url(
     mock_dynamo_db,
 ):
     # Mock event input
-    event = {"body": json.dumps({"url": test_url})}
+    event = {
+        "requestContext": request_context(),
+        "body": json.dumps({"url": test_url}),
+    }
 
     # Call the function
     response = handle_post_url(event)
@@ -82,7 +89,10 @@ def test_bad_request_handle_post_url(
     mock_dynamo_db,
 ):
     # Mock event input
-    event = {"body": json.dumps({"bad": "field"})}
+    event = {
+        "requestContext": request_context(),
+        "body": json.dumps({"bad": "field"}),
+    }
 
     # Call the function
     response = handle_post_url(event)
