@@ -42,9 +42,7 @@ def mock_dynamo_db(environment_variables):
                     "KeySchema": [
                         {"AttributeName": "owner", "KeyType": "HASH"},  # Key schema for the GSI
                     ],
-                    "Projection": {
-                        "ProjectionType": "ALL"
-                    },
+                    "Projection": {"ProjectionType": "ALL"},
                     "ProvisionedThroughput": {
                         "ReadCapacityUnits": 5,
                         "WriteCapacityUnits": 5,

@@ -3,13 +3,12 @@ import os
 
 import boto3
 import shortuuid
-from boto3.dynamodb.conditions import Attr
+from boto3.dynamodb.conditions import Attr, Key
 from pydantic import ValidationError
-
-from url_shorten_handler.util.ip_processor import IPAddressProcessor
 from url_shorten_handler.model.shortened_url import ShortenedUrl
 from url_shorten_handler.util import logging
 from url_shorten_handler.util.event_util import get_proxy_param, get_cognito_name
+from url_shorten_handler.util.ip_processor import IPAddressProcessor
 
 
 def handle_options(event: dict):
@@ -178,4 +177,24 @@ def handle_get_url_stats(event):
     return {
         "statusCode": 200,
         "body": short_url_object.model_dump_json(exclude={"addresses"}),
+    }
+
+
+def handle_list_url(event: dict):
+    dynamodb = boto3.resource("dynamodb", region_name=os.getenv("AWS_REGION"))
+    table = dynamodb.Table(os.environ["SHORTEN_URLS_TABLE"])
+    user = get_cognito_name(event)
+    logging.info(f"Requesting url list for '{user}'")
+
+    short_url_items = table.query(
+        IndexName="OwnerIndex",
+        KeyConditionExpression=Key("owner").eq(user),
+    )
+    logging.info(f"Sending url list for '{user}'")
+
+    short_url_items = short_url_items.get("Items", [])
+
+    return {
+        "statusCode": 200,
+        "body": json.dumps(short_url_items),
     }

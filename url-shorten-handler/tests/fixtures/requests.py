@@ -163,6 +163,30 @@ def api_gw_request_get_url():
     }
 
 
+def api_gw_request_get_url_list_jwt():
+    return {
+        "version": "2.0",
+        "routeKey": "GET /{proxy+}",
+        "rawPath": "/api/url/G3rZi26WMeGnqVvuNSnENu",
+        "rawQueryString": "",
+        "headers": {
+            "cache-control": "no-cache",
+            "content-length": "0",
+            "host": "efx7utlm0j.execute-api.eu-west-2.amazonaws.com",
+            "user-agent": "Amazon CloudFront",
+            "via": "1.1 cb3394cad3f414f33c4f30965c750226.cloudfront.net (CloudFront)",
+            "x-amz-cf-id": "Ot_Jg3a7rED4t9MLIXAayWc35quJbYnGq6Uz8Yh538E56u2YR1CxHw==",
+            "x-amzn-trace-id": "Root=1-653e2c65-2567a04d526bfa2749ada0a9",
+            "x-forwarded-for": "2.99.21.143, 15.158.44.243",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+        },
+        "requestContext": request_context(),
+        "pathParameters": {"proxy": "api/url/G3rZi26WMeGnqVvuNSnENu"},
+        "isBase64Encoded": False,
+    }
+
+
 def api_gw_request_get_url_shorten_rtx():
     return {
         "version": "2.0",
