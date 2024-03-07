@@ -14,7 +14,6 @@ class UrlShortenerController:
         ("OPTIONS", "/url"): handle_options,
         ("GET", "/url/list"): handle_list_url,
         ("GET", "/{proxy+}"): handle_get_url,
-        # ("GET", "/url/{proxy+}"): handle_get_url,
         ("DELETE", "/url/{proxy+}"): handle_delete_url,
         ("GET", "/url/stats/{proxy+}"): handle_get_url_stats,
     }
