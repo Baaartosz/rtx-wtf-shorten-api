@@ -8,7 +8,7 @@ resource "aws_apigatewayv2_api" "shorten_http_api" {
 data "template_file" "api_spec_body" {
   template = file("../api/shorten-api.tpl")
   vars     = {
-    lambda_function_uri = aws_lambda_function.url_shorten_lambda.invoke_arn
+    shorten_service_lambda = aws_lambda_function.url_shorten_lambda.invoke_arn
     client_id = "7re6c9kmrbdbjmj3v33pnnls8s"
     user_pool_id = "eu-west-2_Wurx6FIUd"
     region = local.region
@@ -29,6 +29,13 @@ resource "aws_apigatewayv2_domain_name" "shorten_api_domain_name" {
     endpoint_type   = "REGIONAL"
     security_policy = "TLS_1_2"
   }
+}
+
+resource "aws_apigatewayv2_integration" "lambda_integration" {
+  api_id           = aws_apigatewayv2_api.shorten_http_api.id
+  integration_type = "AWS_PROXY"
+  integration_uri  = aws_lambda_function.url_shorten_lambda.invoke_arn
+  payload_format_version = "2.0"
 }
 
 resource "aws_apigatewayv2_api_mapping" "shorten_api_mapping" {

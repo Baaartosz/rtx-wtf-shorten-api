@@ -1,8 +1,8 @@
 def api_gw_request_post_url():
     return {
         "version": "2.0",
-        "routeKey": "POST /url",
-        "rawPath": "/url",
+        "routeKey": "POST /urls",
+        "rawPath": "/urls",
         "rawQueryString": "",
         "headers": {
             "accept": "*/*",
@@ -46,13 +46,13 @@ def api_gw_request_post_url():
             "domainPrefix": "shorten",
             "http": {
                 "method": "POST",
-                "path": "/url",
+                "path": "/urls",
                 "protocol": "HTTP/1.1",
                 "sourceIp": "82.21.32.80",
                 "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
             },
             "requestId": "UOjQWi8mrPEEMng=",
-            "routeKey": "POST /url",
+            "routeKey": "POST /urls",
             "stage": "$default",
             "time": "06/Mar/2024:21:52:27 +0000",
             "timeEpoch": 1709761947566,
@@ -74,15 +74,15 @@ def request_context():
                     "cognito:username": "bart",
                 }
             }
-        }
+        },
     }
 
 
 def api_gw_request_options_url():
     return {
         "version": "2.0",
-        "routeKey": "OPTIONS /url",
-        "rawPath": "/url",
+        "routeKey": "OPTIONS /urls",
+        "rawPath": "/urls",
         "rawQueryString": "",
         "headers": {
             "accept": "*/*",
@@ -104,13 +104,13 @@ def api_gw_request_options_url():
             "domainPrefix": "efx7utlm0j",
             "http": {
                 "method": "OPTIONS",
-                "path": "/url",
+                "path": "/urls",
                 "protocol": "HTTP/1.1",
                 "sourceIp": "2.99.21.143",
                 "userAgent": "PostmanRuntime/7.34.0",
             },
             "requestId": "NaXC-g2WLPEEMBQ=",
-            "routeKey": "OPTIONS /url",
+            "routeKey": "OPTIONS /urls",
             "stage": "$default",
             "time": "26/Oct/2023:13:37:48 +0000",
             "timeEpoch": 1698327468323,
@@ -122,8 +122,8 @@ def api_gw_request_options_url():
 def api_gw_request_get_url():
     return {
         "version": "2.0",
-        "routeKey": "GET /url/{proxy+}",
-        "rawPath": "/url/G3rZi26WMeGnqVvuNSnENu",
+        "routeKey": "GET /urls/{id+}",
+        "rawPath": "/urls/G3rZi26WMeGnqVvuNSnENu",
         "rawQueryString": "",
         "headers": {
             "accept": "*/*",
@@ -146,13 +146,13 @@ def api_gw_request_get_url():
             "domainPrefix": "shorten",
             "http": {
                 "method": "GET",
-                "path": "/url/G3rZi26WMeGnqVvuNSnENu",
+                "path": "/urls/G3rZi26WMeGnqVvuNSnENu",
                 "protocol": "HTTP/1.1",
                 "sourceIp": "78.150.27.179",
                 "userAgent": "PostmanRuntime/7.32.3",
             },
             "requestId": "KRMZ-g7_LPEEM0A=",
-            "routeKey": "GET /url/{proxy+}",
+            "routeKey": "GET /urls/{id+}",
             "stage": "$default",
             "time": "26/Aug/2023:12:46:55 +0000",
             "timeEpoch": 1693054015586,
@@ -166,8 +166,8 @@ def api_gw_request_get_url():
 def api_gw_request_get_url_list_jwt():
     return {
         "version": "2.0",
-        "routeKey": "GET /{proxy+}",
-        "rawPath": "/api/url/G3rZi26WMeGnqVvuNSnENu",
+        "routeKey": "GET /{id+}",
+        "rawPath": "/api/urls/G3rZi26WMeGnqVvuNSnENu",
         "rawQueryString": "",
         "headers": {
             "cache-control": "no-cache",
@@ -182,7 +182,7 @@ def api_gw_request_get_url_list_jwt():
             "x-forwarded-proto": "https",
         },
         "requestContext": request_context(),
-        "pathParameters": {"proxy": "api/url/G3rZi26WMeGnqVvuNSnENu"},
+        "pathParameters": {"proxy": "api/urls/G3rZi26WMeGnqVvuNSnENu"},
         "isBase64Encoded": False,
     }
 
@@ -190,8 +190,8 @@ def api_gw_request_get_url_list_jwt():
 def api_gw_request_get_url_shorten_rtx():
     return {
         "version": "2.0",
-        "routeKey": "GET /{proxy+}",
-        "rawPath": "/api/url/G3rZi26WMeGnqVvuNSnENu",
+        "routeKey": "GET /{id+}",
+        "rawPath": "/api/urls/G3rZi26WMeGnqVvuNSnENu",
         "rawQueryString": "",
         "headers": {
             "cache-control": "no-cache",
@@ -212,18 +212,18 @@ def api_gw_request_get_url_shorten_rtx():
             "domainPrefix": "efx7utlm0j",
             "http": {
                 "method": "GET",
-                "path": "/api/url/G3rZi26WMeGnqVvuNSnENu",
+                "path": "/api/urls/G3rZi26WMeGnqVvuNSnENu",
                 "protocol": "HTTP/1.1",
                 "sourceIp": "2.99.21.143",
                 "userAgent": "Amazon CloudFront",
             },
             "requestId": "Njvf9gy3LPEEJfA=",
-            "routeKey": "GET /{proxy+}",
+            "routeKey": "GET /{id+}",
             "stage": "$default",
             "time": "29/Oct/2023:09:56:53 +0000",
             "timeEpoch": 1698573413854,
         },
-        "pathParameters": {"proxy": "api/url/G3rZi26WMeGnqVvuNSnENu"},
+        "pathParameters": {"proxy": "api/urls/G3rZi26WMeGnqVvuNSnENu"},
         "isBase64Encoded": False,
     }
 
@@ -231,8 +231,8 @@ def api_gw_request_get_url_shorten_rtx():
 def api_gw_request_get_url_stats():
     return {
         "version": "2.0",
-        "routeKey": "GET /url/stats/{proxy+}",
-        "rawPath": "/url/stats/G3rZi26WMeGnqVvuNSnENu",
+        "routeKey": "GET /urls/stats/{id+}",
+        "rawPath": "/urls/stats/G3rZi26WMeGnqVvuNSnENu",
         "rawQueryString": "",
         "headers": {
             "accept": "*/*",
@@ -255,13 +255,13 @@ def api_gw_request_get_url_stats():
             "domainPrefix": "shorten",
             "http": {
                 "method": "GET",
-                "path": "/url/stats/G3rZi26WMeGnqVvuNSnENu",
+                "path": "/urls/stats/G3rZi26WMeGnqVvuNSnENu",
                 "protocol": "HTTP/1.1",
                 "sourceIp": "78.150.27.179",
                 "userAgent": "PostmanRuntime/7.32.3",
             },
             "requestId": "KRM_qhBxLPEEPhQ=",
-            "routeKey": "GET /url/stats/{proxy+}",
+            "routeKey": "GET /urls/stats/{id+}",
             "stage": "$default",
             "time": "26/Aug/2023:12:50:56 +0000",
             "timeEpoch": 1693054256780,
@@ -275,8 +275,8 @@ def api_gw_request_get_url_stats():
 def api_gw_request_delete_url():
     return {
         "version": "2.0",
-        "routeKey": "DELETE /url/{proxy+}",
-        "rawPath": "/url/G3rZi26WMeGnqVvuNSnENu",
+        "routeKey": "DELETE /urls/{id+}",
+        "rawPath": "/urls/G3rZi26WMeGnqVvuNSnENu",
         "rawQueryString": "",
         "headers": {
             "accept": "*/*",
@@ -299,13 +299,13 @@ def api_gw_request_delete_url():
             "domainPrefix": "shorten",
             "http": {
                 "method": "DELETE",
-                "path": "/url/G3rZi26WMeGnqVvuNSnENu",
+                "path": "/urls/G3rZi26WMeGnqVvuNSnENu",
                 "protocol": "HTTP/1.1",
                 "sourceIp": "78.150.27.179",
                 "userAgent": "PostmanRuntime/7.32.3",
             },
             "requestId": "KRM_qhBxLPEEPhQ=",
-            "routeKey": "DELETE /url/{proxy+}",
+            "routeKey": "DELETE /urls/{id+}",
             "stage": "$default",
             "time": "26/Aug/2023:12:50:56 +0000",
             "timeEpoch": 1693054256780,
@@ -319,7 +319,7 @@ def api_gw_request_delete_url():
 def api_gw_request_from_rtx_wtf():
     return {
         "version": "2.0",
-        "routeKey": "GET /{proxy+}",
+        "routeKey": "GET /{id+}",
         "rawPath": "/s/s/G3rZi26WMeGnqVvuNSnENu",
         "rawQueryString": "",
         "headers": {
@@ -347,7 +347,7 @@ def api_gw_request_from_rtx_wtf():
                 "userAgent": "Amazon CloudFront",
             },
             "requestId": "KXvtlg6jLPEEJbg=",
-            "routeKey": "GET /{proxy+}",
+            "routeKey": "GET /{id+}",
             "stage": "$default",
             "time": "28/Aug/2023:12:29:23 +0000",
             "timeEpoch": 1693225763423,
@@ -360,7 +360,7 @@ def api_gw_request_from_rtx_wtf():
 def api_gw_request_from_rtx_wtf_alternative():
     return {
         "version": "2.0",
-        "routeKey": "GET /{proxy+}",
+        "routeKey": "GET /{id+}",
         "rawPath": "/s/s/G3rZi26WMeGnqVvuNSnENu",
         "rawQueryString": "",
         "headers": {
@@ -388,7 +388,7 @@ def api_gw_request_from_rtx_wtf_alternative():
                 "userAgent": "Amazon CloudFront",
             },
             "requestId": "KXvtlg6jLPEEJbg=",
-            "routeKey": "GET /{proxy+}",
+            "routeKey": "GET /{id+}",
             "stage": "$default",
             "time": "28/Aug/2023:12:29:23 +0000",
             "timeEpoch": 1693225763423,
@@ -401,8 +401,8 @@ def api_gw_request_from_rtx_wtf_alternative():
 def api_gw_request_get_url_stats_trailing_slash():
     return {
         "version": "2.0",
-        "routeKey": "GET /url/stats/{proxy+}",
-        "rawPath": "/url/stats/test/",
+        "routeKey": "GET /urls/stats/{id+}",
+        "rawPath": "/urls/stats/test/",
         "rawQueryString": "",
         "headers": {
             "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
@@ -428,13 +428,13 @@ def api_gw_request_get_url_stats_trailing_slash():
             "domainPrefix": "shorten",
             "http": {
                 "method": "GET",
-                "path": "/url/stats/test/",
+                "path": "/urls/stats/test/",
                 "protocol": "HTTP/1.1",
                 "sourceIp": "2.97.24.153",
                 "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/118.0",
             },
             "requestId": "M5DokiqlrPEEP6A=",
-            "routeKey": "GET /url/stats/{proxy+}",
+            "routeKey": "GET /urls/stats/{id+}",
             "stage": "$default",
             "time": "16/Oct/2023:11:07:21 +0000",
             "timeEpoch": 1697454441708,
