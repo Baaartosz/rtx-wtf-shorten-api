@@ -4,8 +4,9 @@ import os
 import pytest
 from assertpy import assert_that
 from pytest_httpx import HTTPXMock
+from tests.fixtures.api_gw_event import stats_url
 
-from tests.fixtures.requests import api_gw_request_get_url_stats
+from tests.fixtures.requests import api_gw_request_get_url_stats_trailing_slash
 from url_shorten_handler.logic import handle_get_url_stats
 
 
@@ -30,7 +31,7 @@ def test_happy_handle_get_url_stats_without_addresses(
     table = _get_table(mock_dynamo_db)
     table.put_item(
         Item={
-            "id": "G3rZi26WMeGnqVvuNSnENu",
+            "id": "oRtPrwjaSit",
             "owner": "bart",
             "original_url": "http://example.com",
             "country_stats": {
@@ -39,14 +40,15 @@ def test_happy_handle_get_url_stats_without_addresses(
         }
     )
 
-    response = handle_get_url_stats((api_gw_request_get_url_stats()))
+
+    response = handle_get_url_stats(stats_url())
 
     # Assert correct response has been returned
     assert_that(response["statusCode"]).is_equal_to(200)
     assert_that(response["body"]).is_equal_to(
         json.dumps(
             {
-                "id": "G3rZi26WMeGnqVvuNSnENu",
+                "id": "oRtPrwjaSit",
                 "owner": "bart",
                 "original_url": "http://example.com/",
                 "country_stats": {
@@ -58,7 +60,7 @@ def test_happy_handle_get_url_stats_without_addresses(
     )
 
     # Assert DynamoDB has not changed
-    short_url_item = table.get_item(Key={"id": "G3rZi26WMeGnqVvuNSnENu"})
+    short_url_item = table.get_item(Key={"id": "oRtPrwjaSit"})
     assert_that(short_url_item["Item"].get("addresses")).is_none()
     assert_that(short_url_item["Item"]["country_stats"]).is_equal_to(
         {
@@ -86,7 +88,7 @@ def test_happy_handle_get_url_stats_with_unprocessed_addresses(
     table = _get_table(mock_dynamo_db)
     table.put_item(
         Item={
-            "id": "G3rZi26WMeGnqVvuNSnENu",
+            "id": "oRtPrwjaSit",
             "owner": "bart",
             "original_url": "http://example.com",
             "addresses": ["78.150.27.179" for _ in range(address_count)],
@@ -100,14 +102,14 @@ def test_happy_handle_get_url_stats_with_unprocessed_addresses(
         json=ip_api_response,
     )
 
-    response = handle_get_url_stats((api_gw_request_get_url_stats()))
+    response = handle_get_url_stats(stats_url())
 
     # Assert DynamoDB has changed with valid amount of clicks
     assert_that(response["statusCode"]).is_equal_to(200)
     assert_that(response["body"]).is_equal_to(
         json.dumps(
             {
-                "id": "G3rZi26WMeGnqVvuNSnENu",
+                "id": "oRtPrwjaSit",
                 "owner": "bart",
                 "original_url": "http://example.com/",
                 "country_stats": {
@@ -119,7 +121,7 @@ def test_happy_handle_get_url_stats_with_unprocessed_addresses(
     )
 
     # Assert correct response has been returned
-    short_url_item = table.get_item(Key={"id": "G3rZi26WMeGnqVvuNSnENu"})
+    short_url_item = table.get_item(Key={"id": "oRtPrwjaSit"})
     assert_that(short_url_item["Item"].get("addresses")).is_none()
     assert_that(short_url_item["Item"]["country_stats"]).is_equal_to(
         {
@@ -136,7 +138,7 @@ def test_happy_handle_get_url_stats_with_existing_addresses(
     table = _get_table(mock_dynamo_db)
     table.put_item(
         Item={
-            "id": "G3rZi26WMeGnqVvuNSnENu",
+            "id": "oRtPrwjaSit",
             "owner": "bart",
             "original_url": "http://example.com",
             "addresses": ["78.150.27.179"],
@@ -154,14 +156,14 @@ def test_happy_handle_get_url_stats_with_existing_addresses(
         json=_mock_ip_api_response(1),
     )
 
-    response = handle_get_url_stats((api_gw_request_get_url_stats()))
+    response = handle_get_url_stats(stats_url())
 
     # Assert correct response has been returned
     assert_that(response["statusCode"]).is_equal_to(200)
     assert_that(response["body"]).is_equal_to(
         json.dumps(
             {
-                "id": "G3rZi26WMeGnqVvuNSnENu",
+                "id": "oRtPrwjaSit",
                 "owner": "bart",
                 "original_url": "http://example.com/",
                 "country_stats": {
@@ -173,7 +175,7 @@ def test_happy_handle_get_url_stats_with_existing_addresses(
     )
 
     # Assert DynamoDB has not changed
-    short_url_item = table.get_item(Key={"id": "G3rZi26WMeGnqVvuNSnENu"})
+    short_url_item = table.get_item(Key={"id": "oRtPrwjaSit"})
     assert_that(short_url_item["Item"].get("addresses")).is_none()
     assert_that(short_url_item["Item"]["country_stats"]).is_equal_to(
         {
@@ -186,7 +188,7 @@ def test_unhappy_no_short_url(
     mock_dynamo_db,
     httpx_mock: HTTPXMock,
 ):
-    response = handle_get_url_stats((api_gw_request_get_url_stats()))
+    response = handle_get_url_stats((api_gw_request_get_url_stats_trailing_slash()))
 
     # Assert correct response has been returned
     assert_that(response["statusCode"]).is_equal_to(404)

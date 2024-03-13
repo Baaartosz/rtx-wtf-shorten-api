@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "url-shorten-ft"
+version = "0.1.0"
+description = ""
+authors = ["Bartosz Perczynski <bartosz_p@hotmail.com>"]
+readme = "README.md"
+packages = [{include = "url_shorten_ft"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pytest-order = "^1.2.0"
+httpie = "^3.2.2"
+assertpy = "^1.1"
+boto3 = "^1.34.60"
+python-dotenv = "^1.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

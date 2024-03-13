@@ -21,40 +21,15 @@
             "description": "Shortened URL not found."
           }
         },
-        "x-amazon-apigateway-integration": {
-          "payloadFormatVersion": "2.0",
-          "type": "aws_proxy",
-          "httpMethod": "POST",
-          "uri": "${shorten_service_lambda}",
-          "connectionType": "INTERNET"
-        }
-      },
-      "parameters": [
-        {
-          "name": "id+",
-          "in": "path",
-          "description": "Path parameter to include shortened url identifier",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ]
-    },
-    "/urls": {
-      "post": {
-        "summary": "Create a new shortened URL",
-        "responses": {
-          "201": {
-            "description": "URL created successfully."
-          },
-          "403": {
-            "description": "Unauthorised"
-          }
-        },
-        "security": [
+        "parameters": [
           {
-            "jwt-authorizer": []
+            "name": "id+",
+            "in": "path",
+            "description": "Path parameter to include shortened url identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "x-amazon-apigateway-integration": {
@@ -64,7 +39,9 @@
           "uri": "${shorten_service_lambda}",
           "connectionType": "INTERNET"
         }
-      },
+      }
+    },
+    "/urls/{id+}": {
       "get": {
         "summary": "Redirect to original URL by ID",
         "responses": {
@@ -73,8 +50,22 @@
           },
           "404": {
             "description": "URL ID not found."
+          },
+          "default": {
+            "description": "Default response for GET /urls"
           }
         },
+        "parameters": [
+          {
+            "name": "id+",
+            "in": "path",
+            "description": "Path parameter to include shortened url identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "x-amazon-apigateway-integration": {
           "payloadFormatVersion": "2.0",
           "type": "aws_proxy",
@@ -88,6 +79,42 @@
         "responses": {
           "204": {
             "description": "URL deleted successfully."
+          }
+        },
+        "parameters": [
+          {
+            "name": "id+",
+            "in": "path",
+            "description": "Path parameter to include shortened url identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "jwt-authorizer": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy",
+          "httpMethod": "POST",
+          "uri": "${shorten_service_lambda}",
+          "connectionType": "INTERNET"
+        }
+      }
+    },
+    "/urls": {
+      "post": {
+        "summary": "Create a new shortened URL",
+        "responses": {
+          "201": {
+            "description": "URL created successfully."
+          },
+          "403": {
+            "description": "Unauthorised"
           }
         },
         "security": [
@@ -204,7 +231,7 @@
           }
         }
       }
-    }
-  },
-  "x-amazon-apigateway-importexport-version": "1.0"
+    },
+    "x-amazon-apigateway-importexport-version": "1.0"
+  }
 }

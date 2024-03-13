@@ -26,6 +26,16 @@ build: ## Build url shorten handler
 test: ## Test url shorten handler
 	$(MAKE) -C url-shorten-handler test
 
+ft: ## Test url shorten handler functionally
+	$(MAKE) -C url-shorten-ft test
+
+full: ## Full unit, ft, build and deploy process
+	@$(MAKE) -C url-shorten-handler test
+	@$(MAKE) -C url-shorten-handler build-zip
+	@$(MAKE) -C terraform apply
+	@$(MAKE) -C url-shorten-ft test
+
+
 guard-%: # Guard for ensuring variables are provided into make tasks
 	@if [ -z '${${*}}' ]; then \
 		echo 'Environment Variable $* is not set.' && exit 1; \

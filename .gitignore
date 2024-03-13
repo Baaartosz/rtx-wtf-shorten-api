@@ -324,3 +324,4 @@ terraform.rc
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,terraform,python
 /url-shorten-handler/url-shorten-handler.zip
+/url-shorten-ft/tests/aws.env

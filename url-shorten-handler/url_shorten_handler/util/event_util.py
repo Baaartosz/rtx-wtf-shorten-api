@@ -7,8 +7,8 @@ def get_route_path(event) -> Tuple[str, str]:
     return route_split[0], route_split[1]
 
 
-def get_proxy_param(event) -> str:
-    return event["pathParameters"]["proxy"].split("/")[-1]
+def get_id_from_event(event) -> str:
+    return event["pathParameters"]["id"].split("/")[-1]
 
 
 def get_cognito_name(event) -> str:

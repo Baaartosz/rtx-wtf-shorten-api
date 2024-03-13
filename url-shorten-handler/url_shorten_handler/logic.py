@@ -8,7 +8,7 @@ from boto3.dynamodb.conditions import Attr, Key
 from pydantic import ValidationError
 from url_shorten_handler.model.shortened_url import ShortenedUrl
 from url_shorten_handler.util import logging
-from url_shorten_handler.util.event_util import get_proxy_param, get_cognito_name
+from url_shorten_handler.util.event_util import get_id_from_event, get_cognito_name
 from url_shorten_handler.util.ip_processor import IPAddressProcessor
 
 
@@ -77,7 +77,7 @@ def handle_post_url(event: dict):
 def handle_get_url(event: dict):
     dynamodb = boto3.resource("dynamodb", region_name=os.getenv("AWS_REGION"))
     table = dynamodb.Table(os.environ["SHORTEN_URLS_TABLE"])
-    short_url_id = get_proxy_param(event)
+    short_url_id = get_id_from_event(event)
     logging.info(f"Received '{short_url_id}' id for url retrieval")
 
     short_url_item = table.get_item(Key={"id": short_url_id}).get("Item")
@@ -118,7 +118,7 @@ def handle_get_url(event: dict):
 def handle_delete_url(event: dict):
     dynamodb = boto3.resource("dynamodb", region_name=os.getenv("AWS_REGION"))
     table = dynamodb.Table(os.environ["SHORTEN_URLS_TABLE"])
-    short_url_id = get_proxy_param(event)
+    short_url_id = get_id_from_event(event)
     logging.info(f"Received '{short_url_id}' id for deletion")
     try:
         table.delete_item(
@@ -136,10 +136,10 @@ def handle_delete_url(event: dict):
 def handle_get_url_stats(event):
     dynamodb = boto3.resource("dynamodb", region_name=os.getenv("AWS_REGION"))
     table = dynamodb.Table(os.environ["SHORTEN_URLS_TABLE"])
-    short_url_id = get_proxy_param(event)
+    short_url_id = get_id_from_event(event)
     logging.info(f"Received '{short_url_id}' id for stat retrieval")
 
-    short_url_item = table.get_item(Key={"id": get_proxy_param(event)}).get("Item")
+    short_url_item = table.get_item(Key={"id": get_id_from_event(event)}).get("Item")
 
     if short_url_item is None:
         logging.warn(f"No Items found wih '{short_url_id}' id")
