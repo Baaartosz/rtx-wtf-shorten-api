@@ -197,6 +197,11 @@ def handle_list_url(event: dict):
     short_url_items = short_url_items.get("Items")
     logging.info(f"Cleaned list '{clean_shortened_url_data(short_url_items)}'")
     return {
+        "headers": {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "OPTIONS, GET",
+            "Access-Control-Allow-Headers": "*",
+        },
         "statusCode": 200,
         "body": json.dumps(clean_shortened_url_data(short_url_items)),
     }
