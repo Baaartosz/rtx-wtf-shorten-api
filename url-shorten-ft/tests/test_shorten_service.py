@@ -99,9 +99,9 @@ def test_stats_for_url():
 @pytest.mark.order(6)
 @pytest.mark.usefixtures("env_variables")
 def test_get_users_shortened_urls():
-    print(f"GET /users/bart/urls")
+    print(f"GET /urls")
     response = requests.get(
-        url=API_URL + f"/users/bart/urls",  # change this to be dynamic
+        url=API_URL + f"/urls",
         headers={"Authorization": authorize()},
     )
     assert_that(response.status_code).is_equal_to(200)

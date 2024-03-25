@@ -4,19 +4,19 @@ import os
 import pytest
 from assertpy import assert_that
 
-from tests.fixtures.requests import api_gw_request_get_url_list_jwt
+from tests.fixtures.requests import api_gw_request_get_url_list_jwt, api_gw_request_list_users_urls
 from url_shorten_handler.logic import handle_list_url
 
 
 @pytest.mark.parametrize(
     "event",
     [
-        pytest.param(api_gw_request_get_url_list_jwt()),
+        pytest.param(api_gw_request_list_users_urls()),
     ],
 )
-def test_happy_handle_get_url(
-        event: dict,
-        mock_dynamo_db,
+def test_happy_handle_get_url_for_user(
+    event: dict,
+    mock_dynamo_db,
 ):
     # Pre-populate DynamoDB table with test record
     table = _get_table(mock_dynamo_db)

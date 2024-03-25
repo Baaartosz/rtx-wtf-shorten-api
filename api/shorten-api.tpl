@@ -107,6 +107,29 @@
       }
     },
     "/urls": {
+      "get": {
+        "summary": "Get all URLs for a user",
+        "responses": {
+          "200": {
+            "description": "URLs retrieved successfully."
+          },
+          "204": {
+            "description": "No URLs found"
+          }
+        },
+        "security": [
+          {
+            "jwt-authorizer": []
+          }
+        ],
+        "x-amazon-apigateway-integration": {
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy",
+          "httpMethod": "POST",
+          "uri": "${shorten_service_lambda}",
+          "connectionType": "INTERNET"
+        }
+      },
       "post": {
         "summary": "Create a new shortened URL",
         "responses": {

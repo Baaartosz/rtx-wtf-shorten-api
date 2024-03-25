@@ -13,8 +13,7 @@ class UrlShortenerController:
     _ROUTE_MAP = {
         ("POST", "/urls"): handle_post_url,
         ("OPTIONS", "/urls"): handle_options,
-        ("OPTIONS", "/users/{username}/urls"): handle_options,
-        ("GET", "/users/{username}/urls"): handle_list_url,
+        ("GET", "/urls"): handle_list_url,
         ("GET", "/{id+}"): handle_get_url,
         ("GET", "/urls/{id+}"): handle_get_url,
         ("DELETE", "/urls/{id+}"): handle_delete_url,

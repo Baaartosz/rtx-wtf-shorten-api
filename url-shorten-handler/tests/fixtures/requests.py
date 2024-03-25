@@ -466,8 +466,8 @@ def api_gw_request_get_url_stats_trailing_slash():
 def api_gw_request_list_users_urls():
     return {
         "version": "2.0",
-        "routeKey": "GET /users/{username}/urls",
-        "rawPath": "/users/bart/urls",
+        "routeKey": "GET /urls",
+        "rawPath": "/urls",
         "rawQueryString": "",
         "headers": {
             "accept": "*/*",
@@ -510,17 +510,16 @@ def api_gw_request_list_users_urls():
             "domainPrefix": "shorten",
             "http": {
                 "method": "GET",
-                "path": "/users/bart/urls",
+                "path": "/urls",
                 "protocol": "HTTP/1.1",
                 "sourceIp": "82.21.32.80",
                 "userAgent": "insomnia/8.6.1",
             },
             "requestId": "UU5lciFZLPEEPSA=",
-            "routeKey": "GET /users/{username}/urls",
+            "routeKey": "GET /urls",
             "stage": "$default",
             "time": "08/Mar/2024:20:06:20 +0000",
             "timeEpoch": 1709928380167,
         },
-        "pathParameters": {"username": "bart"},
         "isBase64Encoded": False,
     }
