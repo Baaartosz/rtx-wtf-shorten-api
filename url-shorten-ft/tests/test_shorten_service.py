@@ -63,6 +63,9 @@ def test_options_for_urls_endpoint():
         url=API_URL + "/urls",
     )
     assert_that(response.status_code).is_equal_to(200)
+    assert_that(response.headers.get("access-control-allow-headers")).is_equal_to("*")
+    assert_that(response.headers.get("access-control-allow-origin")).is_equal_to("*")
+    assert_that(response.headers.get("access-control-allow-methods")).is_equal_to("OPTIONS, GET, POST, DELETE")
 
 
 @pytest.mark.order(3)
@@ -105,6 +108,9 @@ def test_get_users_shortened_urls():
         headers={"Authorization": authorize()},
     )
     assert_that(response.status_code).is_equal_to(200)
+    assert_that(response.headers.get("access-control-allow-headers")).is_equal_to("*")
+    assert_that(response.headers.get("access-control-allow-origin")).is_equal_to("*")
+    assert_that(response.headers.get("access-control-allow-methods")).is_equal_to("OPTIONS, GET")
 
 
 @pytest.mark.order(7)
