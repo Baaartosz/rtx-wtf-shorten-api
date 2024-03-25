@@ -170,6 +170,21 @@
           "connectionType": "INTERNET"
         }
       },
+      "options": {
+        "summary": "Request options for shortened URLs",
+        "responses": {
+          "default": {
+            "description": "Default response for OPTIONS /urls"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "payloadFormatVersion": "2.0",
+          "type": "aws_proxy",
+          "httpMethod": "POST",
+          "uri": "${shorten_service_lambda}",
+          "connectionType": "INTERNET"
+        }
+      },
       "parameters": [
         {
           "name": "username",
