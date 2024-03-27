@@ -101,7 +101,7 @@ def test_stats_for_url():
         headers={"Authorization": authorize()},
     )
     assert_that(response.status_code).is_equal_to(200)
-    assert_that(response.json()).contains_key("id", "original_url", "country_stats")
+    assert_that(response.json()).contains_key("created_on", "id", "original_url", "country_stats")
     assert_that(response.json().get("addresses")).is_none()
 
 

@@ -25,7 +25,7 @@ def _get_table(mock_dynamo_db):
 
 
 def test_happy_handle_get_url_stats_without_addresses(
-    mock_dynamo_db,
+        mock_dynamo_db,
 ):
     # Pre-populate DynamoDB table with test record
     table = _get_table(mock_dynamo_db)
@@ -33,13 +33,13 @@ def test_happy_handle_get_url_stats_without_addresses(
         Item={
             "id": "oRtPrwjaSit",
             "owner": "bart",
+            "created_on": "2024-01-01T12:00:00",
             "original_url": "http://example.com",
             "country_stats": {
                 "United Kingdom": 1,
             },
         }
     )
-
 
     response = handle_get_url_stats(stats_url())
 
@@ -50,6 +50,7 @@ def test_happy_handle_get_url_stats_without_addresses(
             {
                 "id": "oRtPrwjaSit",
                 "owner": "bart",
+                "created_on": "2024-01-01T12:00:00",
                 "original_url": "http://example.com/",
                 "country_stats": {
                     "United Kingdom": "1",
@@ -79,10 +80,10 @@ def test_happy_handle_get_url_stats_without_addresses(
     ids=["1 address", "10 addresses", "150 addresses"],
 )
 def test_happy_handle_get_url_stats_with_unprocessed_addresses(
-    httpx_mock: HTTPXMock,
-    address_count: int,
-    ip_api_response: list,
-    mock_dynamo_db,
+        httpx_mock: HTTPXMock,
+        address_count: int,
+        ip_api_response: list,
+        mock_dynamo_db,
 ):
     # Pre-populate DynamoDB table with test record
     table = _get_table(mock_dynamo_db)
@@ -90,6 +91,7 @@ def test_happy_handle_get_url_stats_with_unprocessed_addresses(
         Item={
             "id": "oRtPrwjaSit",
             "owner": "bart",
+            "created_on": "2024-01-01T12:00:00",
             "original_url": "http://example.com",
             "addresses": ["78.150.27.179" for _ in range(address_count)],
         }
@@ -111,6 +113,7 @@ def test_happy_handle_get_url_stats_with_unprocessed_addresses(
             {
                 "id": "oRtPrwjaSit",
                 "owner": "bart",
+                "created_on": "2024-01-01T12:00:00",
                 "original_url": "http://example.com/",
                 "country_stats": {
                     "United Kingdom": address_count,
@@ -131,8 +134,8 @@ def test_happy_handle_get_url_stats_with_unprocessed_addresses(
 
 
 def test_happy_handle_get_url_stats_with_existing_addresses(
-    mock_dynamo_db,
-    httpx_mock: HTTPXMock,
+        mock_dynamo_db,
+        httpx_mock: HTTPXMock,
 ):
     # Pre-populate DynamoDB table with test record
     table = _get_table(mock_dynamo_db)
@@ -140,6 +143,7 @@ def test_happy_handle_get_url_stats_with_existing_addresses(
         Item={
             "id": "oRtPrwjaSit",
             "owner": "bart",
+            "created_on": "2024-01-01T12:00:00",
             "original_url": "http://example.com",
             "addresses": ["78.150.27.179"],
             "country_stats": {
@@ -165,6 +169,7 @@ def test_happy_handle_get_url_stats_with_existing_addresses(
             {
                 "id": "oRtPrwjaSit",
                 "owner": "bart",
+                "created_on": "2024-01-01T12:00:00",
                 "original_url": "http://example.com/",
                 "country_stats": {
                     "United Kingdom": "2",
@@ -185,8 +190,8 @@ def test_happy_handle_get_url_stats_with_existing_addresses(
 
 
 def test_unhappy_no_short_url(
-    mock_dynamo_db,
-    httpx_mock: HTTPXMock,
+        mock_dynamo_db,
+        httpx_mock: HTTPXMock,
 ):
     response = handle_get_url_stats((api_gw_request_get_url_stats_trailing_slash()))
 

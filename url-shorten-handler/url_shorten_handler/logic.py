@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import datetime
 from typing import List
 
 import boto3
@@ -20,7 +21,7 @@ def handle_options(event: dict):
             "Access-Control-Allow-Methods": "OPTIONS, GET, POST, DELETE",
             "Access-Control-Allow-Headers": "*",
         },
-    } #     TODO(security): fix options allowed origins, methods and headers for all endpoints for production
+    }  # TODO(security): fix options allowed origins, methods and headers for all endpoints for production
 
 
 def handle_post_url(event: dict):
@@ -29,6 +30,7 @@ def handle_post_url(event: dict):
     request_body = json.loads(event["body"])
     try:
         short_url = ShortenedUrl(
+            created_on=datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S'),
             id=shortuuid.uuid()[:12],
             owner=get_cognito_name(event),
             original_url=request_body["url"],
