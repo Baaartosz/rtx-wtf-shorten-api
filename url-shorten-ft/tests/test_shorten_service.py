@@ -40,6 +40,12 @@ API_URL = "https://shorten.rtx.wtf/api"
 UNIQUE_ID = ""
 
 
+def assert_common_response_headers(response, allow_methods="OPTIONS, GET, POST, DELETE"):
+    assert_that(response.headers.get("access-control-allow-headers")).is_equal_to("*")
+    assert_that(response.headers.get("access-control-allow-origin")).is_equal_to("*")
+    assert_that(response.headers.get("access-control-allow-methods")).is_equal_to(allow_methods)
+
+
 @pytest.mark.order(1)
 @pytest.mark.usefixtures("env_variables")
 def test_create_new_url():
@@ -63,9 +69,7 @@ def test_options_for_urls_endpoint():
         url=API_URL + "/urls",
     )
     assert_that(response.status_code).is_equal_to(200)
-    assert_that(response.headers.get("access-control-allow-headers")).is_equal_to("*")
-    assert_that(response.headers.get("access-control-allow-origin")).is_equal_to("*")
-    assert_that(response.headers.get("access-control-allow-methods")).is_equal_to("OPTIONS, GET, POST, DELETE")
+    assert_common_response_headers(response=response)
 
 
 @pytest.mark.order(3)
@@ -91,12 +95,14 @@ def test_redirect_to_original_url_from_domain():
 @pytest.mark.order(5)
 @pytest.mark.usefixtures("env_variables")
 def test_stats_for_url():
-    print(f"DEL /api/urls/{UNIQUE_ID}")
-    response = requests.delete(
-        url=API_URL + f"/urls/{UNIQUE_ID}",
+    print(f"GET /api/stats/{UNIQUE_ID}")
+    response = requests.get(
+        url=API_URL + f"/stats/{UNIQUE_ID}",
         headers={"Authorization": authorize()},
     )
-    assert_that(response.status_code).is_equal_to(204)
+    assert_that(response.status_code).is_equal_to(200)
+    assert_that(response.json()).contains_key("id", "original_url", "country_stats")
+    assert_that(response.json().get("addresses")).is_none()
 
 
 @pytest.mark.order(6)
@@ -108,12 +114,21 @@ def test_get_users_shortened_urls():
         headers={"Authorization": authorize()},
     )
     assert_that(response.status_code).is_equal_to(200)
-    assert_that(response.headers.get("access-control-allow-headers")).is_equal_to("*")
-    assert_that(response.headers.get("access-control-allow-origin")).is_equal_to("*")
-    assert_that(response.headers.get("access-control-allow-methods")).is_equal_to("OPTIONS, GET")
+    assert_common_response_headers(response=response, allow_methods="OPTIONS, GET")
 
 
 @pytest.mark.order(7)
+@pytest.mark.usefixtures("env_variables")
+def test_options_for_urls_endpoint():
+    print(f"OPTIONS /api/urls/{UNIQUE_ID}")
+    response = requests.options(
+        url=API_URL + f"/urls/{UNIQUE_ID}",
+    )
+    assert_that(response.status_code).is_equal_to(200)
+    assert_common_response_headers(response=response)
+
+
+@pytest.mark.order(8)
 @pytest.mark.usefixtures("env_variables")
 def test_delete_url():
     print(f"DEL /api/urls/{UNIQUE_ID}")

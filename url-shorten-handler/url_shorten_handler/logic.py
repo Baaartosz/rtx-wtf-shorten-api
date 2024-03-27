@@ -20,7 +20,7 @@ def handle_options(event: dict):
             "Access-Control-Allow-Methods": "OPTIONS, GET, POST, DELETE",
             "Access-Control-Allow-Headers": "*",
         },
-    }
+    } #     TODO(security): fix options allowed origins, methods and headers for all endpoints for production
 
 
 def handle_post_url(event: dict):
@@ -130,6 +130,11 @@ def handle_delete_url(event: dict):
         print(f"URL '{short_url_id}' does not exist")
     return {
         "statusCode": 204,
+        "headers": {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "DELETE",
+            "Access-Control-Allow-Headers": "*",
+        },
     }
 
 
@@ -209,7 +214,7 @@ def handle_list_url(event: dict):
 
 def clean_shortened_url_data(url_data_list):
     # Define the fields you want to remove
-    fields_to_remove = {'country_stats', 'addresses'}
+    fields_to_remove = {"country_stats", "addresses"}
 
     # Iterate over each item in the list and remove the specified fields
     for item in url_data_list:

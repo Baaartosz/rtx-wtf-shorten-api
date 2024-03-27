@@ -17,6 +17,7 @@ class UrlShortenerController:
         ("GET", "/{id+}"): handle_get_url,
         ("GET", "/urls/{id+}"): handle_get_url,
         ("DELETE", "/urls/{id+}"): handle_delete_url,
+        ("OPTIONS", "/urls/{id+}"): handle_options,
         ("GET", "/stats/{id+}"): handle_get_url_stats,
     }
 
